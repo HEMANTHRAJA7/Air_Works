@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* service */
+.gradient-hover-outer {
+  background-color: #F2F2F2;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 0 rgba(0, 0, 0, 0);
+}
+
+.gradient-hover-outer:hover {
+  transform: translateY(-4px);
+  background: linear-gradient(135deg,
+    #f2f2f25d 0%,
+    #38b8ef47 35%,
+    #32a95c57 100%);
+  box-shadow: 0 12px 24px rgba(45, 142, 166, 0.4);
+  border-color: linear-gradient(135deg,
+    #f2f2f25d 0%,
+    #38b8ef47 35%,
+    #2e8c4f57 100%);
+  color: black; 
+}
+
+.gradient-hover-outer:hover h3,
+.gradient-hover-outer:hover p {
+  color: black;
+}
+
