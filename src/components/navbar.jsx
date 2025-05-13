@@ -1,10 +1,13 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import logo from "../assets/logo_bg_removed.png";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+
+  // Reference for mobile menu
+  const mobileMenuRef = useRef(null);
 
   const toggleNavbar = () => {
     setMobileDrawerOpen(!mobileDrawerOpen);
@@ -18,38 +21,44 @@ const Navbar = () => {
     }
   };
 
+  // Close the mobile menu if click happens outside
+  const handleClickOutside = (event) => {
+    if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target)) {
+      setMobileDrawerOpen(false);
+    }
+  };
+
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    document.addEventListener("mousedown", handleClickOutside); // Listen for click outside
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      document.removeEventListener("mousedown", handleClickOutside); // Cleanup event listener
+    };
   }, []);
 
   const navItems = [
     { label: "Features", href: "#feature" },
     { label: "Workflow", href: "#workflow" },
-    { label: "Pricing", href: "#pricing" },
+    { label: "Services", href: "#services" },
     { label: "Customers", href: "#customers" },
   ];
 
   return (
-    <nav
-      className={`sticky top-0 z-50 backdrop-blur-md shadow-md transition-all duration-300 ${
-        scrolled ? "py-2" : "py-4"
-      }`}
-    >
+    <nav className="sticky top-0 z-50 backdrop-blur-md shadow-md transition-all duration-300 p-5">
       <div className="container mx-auto flex justify-between items-center px-4 transition-all duration-300">
         {/* Logo */}
-        <div className="flex items-center">
+        <div>
           <img
-            className={`object-contain transition-all duration-300 ${
-              scrolled ? "h-[4rem] w-[8rem]" : "h-[7rem] w-[14rem]"
-            }`}
+            className="object-contain w-[7rem] transition-transform duration-300"
             src={logo}
             alt="Company Logo"
           />
         </div>
 
         {/* Desktop Navigation */}
-        <ul className="hidden lg:flex space-x-10 ml-10">
+        <ul className="hidden lg:flex space-x-8 ml-6">
           {navItems.map((item, index) => (
             <li key={index}>
               <a
@@ -63,16 +72,16 @@ const Navbar = () => {
         </ul>
 
         {/* Desktop CTAs */}
-        <div className="hidden lg:flex items-center space-x-6">
+        <div className="hidden lg:flex items-center space-x-4">
           <a
             href="#"
-            className="py-2 px-4 border border-[#F2F2F2] rounded-md hover:bg-[#2E8C4F] hover:text-white transition-all"
+            className="py-1 px-3 border border-[#F2F2F2] rounded-md hover:bg-[#2E8C4F] hover:text-white transition-all"
           >
             Sign In
           </a>
           <a
             href="#"
-            className="py-2 px-4 bg-gradient-to-r from-[#0FA644] to-[#2E8C4F] text-white rounded-md shadow hover:opacity-90 transition"
+            className="py-1 px-3 bg-gradient-to-r from-[#0FA644] to-[#2E8C4F] text-white rounded-md shadow hover:opacity-90 transition"
           >
             Create an Account
           </a>
@@ -88,7 +97,10 @@ const Navbar = () => {
 
       {/* Mobile Drawer */}
       {mobileDrawerOpen && (
-        <div className="lg:hidden mx-4 mt-2 bg-[#2D3FA6] rounded-lg shadow-md py-6 px-8 space-y-4">
+        <div
+          ref={mobileMenuRef}
+          className=" lg:hidden mx-4 mt-2 bg-[#2D3FA6] rounded-lg shadow-md py-4 px-6 space-y-4 transform transition-transform duration-300 ease-in-out translate-x-0"
+        >
           <ul className="space-y-4">
             {navItems.map((item, index) => (
               <li key={index}>
@@ -104,13 +116,13 @@ const Navbar = () => {
           <div className="mt-4 space-y-2">
             <a
               href="#"
-              className="block text-white text-center py-2 border border-white rounded-md hover:bg-white hover:text-[#2D3FA6] transition"
+              className="block text-white border border-white px-4 py-2 rounded-md text-center hover:bg-white hover:text-[#2D3FA6] transition"
             >
               Sign In
             </a>
             <a
               href="#"
-              className="block text-center py-2 bg-gradient-to-r from-[#0FA644] to-[#2E8C4F] text-white rounded-md hover:opacity-90 transition"
+              className="block text-center px-4 py-2 bg-white text-[#2D3FA6] rounded-md shadow hover:opacity-90 transition"
             >
               Create an Account
             </a>
