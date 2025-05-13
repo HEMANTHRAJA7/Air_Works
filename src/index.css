@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* service */
-.gradient-hover-outer {
+/* .gradient-hover-outer {
   position: relative;
   padding: 1rem;
   border: 2px solid transparent;
@@ -38,7 +38,25 @@
 .gradient-hover-outer:hover h3,
 .gradient-hover-outer:hover p {
   color: black;
+} */
+
+.service-card {
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
+
+.service-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+}
+
+@media (prefers-reduced-motion) {
+  .service-card,
+  .service-card:hover {
+    transition: none;
+    transform: none;
+  }
+}
+
 
 
 /* line scroll */
