@@ -1,5 +1,7 @@
 import Navbar from "../components/navbar"
 import Service from "../components/service"
+import Line from "../components/line"
+import Footer from "../components/footer"
 
 export default function Home() {
   return (
@@ -19,7 +21,9 @@ export default function Home() {
             <h2 className="text-3xl font-bold capitalize">{section} Section</h2>
           </section>
         ))}
+        <Line />
         <Service />
+        <Footer />
       </div>
     </main>
   )
