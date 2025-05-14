@@ -92,10 +92,10 @@ const Signin = () => {
                   Don't have an account? &nbsp;
                   <span>
                     <a
-                      href="/login"
+                      href="/createAccount"
                       className="text-blue-600 font-bold hover:underline lg:text-white lg:hover:text-blue-100 transition-colors"
                     >
-                      Log In
+                      Create account
                     </a>
                   </span>
                 </p>

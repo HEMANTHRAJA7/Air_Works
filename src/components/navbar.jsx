@@ -80,7 +80,7 @@ const Navbar = () => {
             Sign In
           </a>
           <a
-            href="/login"
+            href="/createAccount"
             className="py-1 px-3 bg-gradient-to-r from-[#0FA644] to-[#2E8C4F] text-white rounded-md shadow hover:opacity-90 transition"
           >
             Create an Account
@@ -121,7 +121,7 @@ const Navbar = () => {
               Sign In
             </a>
             <a
-              href="/login"
+              href="/createAccount"
               className="block text-center px-4 py-2 bg-white text-[#2D3FA6] rounded-md shadow hover:opacity-90 transition"
             >
               Create an Account
