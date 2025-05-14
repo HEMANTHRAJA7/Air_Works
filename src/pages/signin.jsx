@@ -1,7 +1,7 @@
 import React from "react";
-import Image from "../assets/draw.jpg";
+import Image from "../assets/draw2.jpg";
 
-const Login = () => {
+const Signin = () => {
   return (
     <div className="min-h-screen flex flex-col">
       {/* Main content container */}
@@ -14,7 +14,7 @@ const Login = () => {
         </div>
 
         {/* Form container */}
-        <div className="w-full max-w-md px-6 sm:px-8 lg:px-0 lg:ml-[10%] z-10">
+        <div className="w-full max-w-md px-6 sm:px-8 lg:px-0 lg:ml-[5%] z-10">
           <form
             className="w-full 
                         bg-white 
@@ -79,6 +79,15 @@ const Login = () => {
                     </a>
                   </span>
                 </p>
+              </div>
+
+              <button
+                type="submit"
+                className="w-full bg-blue-800 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 text-lg"
+              >
+                Sign In
+              </button>
+              <div className="text-center">
                 <p className="text-blue-600 lg:text-white text-base">
                   Don't have an account? &nbsp;
                   <span>
@@ -91,13 +100,6 @@ const Login = () => {
                   </span>
                 </p>
               </div>
-
-              <button
-                type="submit"
-                className="w-full bg-[#2D3FA6] hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 text-lg"
-              >
-                Sign In
-              </button>
             </div>
           </form>
         </div>
@@ -113,4 +115,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Signin;
