@@ -23,7 +23,7 @@ const Line = () => {
                 {text}
               </h3>
               {index !== textItems.length * 2 - 1 && (
-                <img className="h-[30px] w-[50px]" src={Logo} alt="Logo" />
+                <img className="h-[30px] w-[30px]" src={Logo} alt="Logo" />
               )}
             </React.Fragment>
           ))}

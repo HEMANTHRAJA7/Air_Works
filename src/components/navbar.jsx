@@ -46,7 +46,7 @@ const Navbar = () => {
   ];
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur-md shadow-md transition-all duration-300 p-5">
+    <nav className="sticky top-0 z-50  backdrop-blur-md bg-white/20 shadow-md transition-all duration-300 p-5">
       <div className="container mx-auto flex justify-between items-center px-4 transition-all duration-300">
         {/* Logo */}
         <div>
@@ -75,7 +75,7 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center space-x-4">
           <a
             href="/signin"
-            className="py-1 px-3 border border-[#F2F2F2] rounded-md hover:bg-[#2E8C4F] hover:text-white transition-all"
+            className="py-1 px-3 border border-black rounded-md hover:bg-[#2E8C4F] hover:text-white transition-all"
           >
             Sign In
           </a>

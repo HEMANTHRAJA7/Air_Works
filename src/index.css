@@ -40,7 +40,7 @@
 .parallax-container {
   position: relative;
   height: 100vh; 
-  background-image: url('./assets/image.png');
+  background-image: url('./assets/image.webp');
   background-size: cover;
   background-position: center;
   background-attachment: fixed; 
@@ -62,4 +62,11 @@ h1 {
 
 p {
   font-size: 1.5rem; 
+}
+
+@media (max-width: 1024px) {
+  .parallax-container {
+    background-image: url('./assets/image_mob.jpg');
+    background-attachment: scroll; /* optional: better performance on mobile */
+  }
 }

@@ -99,6 +99,17 @@ const Signin = () => {
                     </a>
                   </span>
                 </p>
+                <p className="text-blue-600 lg:text-white text-base">
+                  Employee Sign In: &nbsp;
+                  <span>
+                    <a
+                      href="#"
+                      className="text-blue-600 font-bold hover:underline lg:text-white lg:hover:text-blue-100 transition-colors"
+                    >
+                      Click here
+                    </a>
+                  </span>
+                </p>
               </div>
             </div>
           </form>

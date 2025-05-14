@@ -8,9 +8,8 @@ export default function Home() {
   return (
     <main>
       <Navbar />
-      <Hero/>
+      <Hero />
       <div className="container mx-auto px-4">
-        
         <Line />
         <Service />
         <Footer />

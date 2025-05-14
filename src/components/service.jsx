@@ -86,7 +86,7 @@ const ServiceSection = () => {
         <h2 className="text-4xl md:text-5xl font-bold mb-6 md:mb-8 leading-tight">
           What{" "}
           <span className="text-transparent bg-clip-text bg-gradient-to-r from-teal-600 to-blue-600">
-            Airworkis India
+            Air Works India
           </span>{" "}
           Does
         </h2>
