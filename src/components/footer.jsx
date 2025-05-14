@@ -150,7 +150,7 @@ const Footer = () => {
       {/* Bottom Note */}
       <div className="flex flex-col justify-between pt-5 pb-10 border-t border-gray-200 sm:flex-row">
         <p className="text-sm text-gray-600 mt-5 md:mt-0">
-          © {new Date().getFullYear()} Your Company. All rights reserved.
+          © {new Date().getFullYear()} Air Works. All rights reserved.
         </p>
         {/* Social Media Icons */}
           <div className="flex space-x-4 mt-5 md:mt-0">

@@ -74,13 +74,13 @@ const Navbar = () => {
         {/* Desktop CTAs */}
         <div className="hidden lg:flex items-center space-x-4">
           <a
-            href="#"
+            href="/signin"
             className="py-1 px-3 border border-[#F2F2F2] rounded-md hover:bg-[#2E8C4F] hover:text-white transition-all"
           >
             Sign In
           </a>
           <a
-            href="#"
+            href="/login"
             className="py-1 px-3 bg-gradient-to-r from-[#0FA644] to-[#2E8C4F] text-white rounded-md shadow hover:opacity-90 transition"
           >
             Create an Account
@@ -115,13 +115,13 @@ const Navbar = () => {
           </ul>
           <div className="mt-4 space-y-2">
             <a
-              href="#"
+              href="/signin"
               className="block text-white border border-white px-4 py-2 rounded-md text-center hover:bg-white hover:text-[#2D3FA6] transition"
             >
               Sign In
             </a>
             <a
-              href="#"
+              href="/login"
               className="block text-center px-4 py-2 bg-white text-[#2D3FA6] rounded-md shadow hover:opacity-90 transition"
             >
               Create an Account
