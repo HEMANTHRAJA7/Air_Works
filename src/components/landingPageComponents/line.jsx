@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../assets/logo_only.png";
+import Logo from "../../assets/logo_only.png";
 
 
 const Line = () => {

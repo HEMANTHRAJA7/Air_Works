@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import logo from "../assets/logo_bg_removed.png";
+import logo from "../../assets/logo_bg_removed.png";
 import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
