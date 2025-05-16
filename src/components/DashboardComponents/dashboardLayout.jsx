@@ -1,12 +1,19 @@
-import React from 'react'
-import Sidebar from "./sidebar"
+import React from "react";
+import { Outlet } from "react-router-dom"; // Outlet will render nested routes
+import DashboardSidebar from "./dashboardSidebar";
 
-const dashboardLayout = () => {
+const DashboardLayout = () => {
   return (
-    <div>
-        <Sidebar />
-    </div>
-  )
-}
+    <div className="flex min-h-screen">
+      {/* Sidebar */}
+      <DashboardSidebar />
 
-export default dashboardLayout
+      {/* Main content area */}
+      <main className="flex-1 bg-gray-50 p-6 mt-10 md:mt-0">
+        <Outlet />
+      </main>
+    </div>
+  );
+};
+
+export default DashboardLayout;
