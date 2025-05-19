@@ -8,15 +8,13 @@ const DashboardSidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [collapsed, setCollapsed] = useState(false);
   
-  // Check screen size on mount and resize
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1024 && window.innerWidth >= 768) {
         setCollapsed(true);
       }
     };
-    
-    // Set initial state
+    // Get Initial size
     handleResize();
     
     window.addEventListener('resize', handleResize);
