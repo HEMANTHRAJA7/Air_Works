@@ -6,8 +6,10 @@ import CreateAccount from "./pages/createAccount";
 
 // dashboard
 import DashboardLayout from "./components/DashboardComponents/dashboardLayout";
-import HomeDashboard from "./pages/Dashboard/home"; // or HomeDashboard.js
-import ViewNRC from "./pages/Dashboard/viewNRC";    // or ViewNRC.js
+import HomeDashboard from "./pages/Dashboard/home"; 
+import ViewNRC from "./pages/Dashboard/viewNRC";    
+import PendingNRC from "./pages/Dashboard/pendingNRC";
+import SendBack from "./pages/Dashboard/sendBack";
 
 const App = () => {
   return (
@@ -23,6 +25,8 @@ const App = () => {
           <Route index element={<Navigate to="home" />} />
           <Route path="home" element={<HomeDashboard />} />
           <Route path="view-nrc" element={<ViewNRC />} />
+          <Route path="pending-nrc" element={<PendingNRC />} />
+          <Route path="send-back" element={<SendBack />} />
         </Route>
       </Routes>
     </BrowserRouter>

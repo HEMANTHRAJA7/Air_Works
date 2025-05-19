@@ -77,11 +77,11 @@ const DashboardSidebar = () => {
         </button>
       </header>
 
-      {/* Sidebar */}
+      {/* Sidebar with fixed positioning */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-white border-r border-gray-300 
+        className={`fixed top-0 left-0 h-screen bg-white border-r border-gray-300 
           transform transition-all duration-300 ease-in-out z-40
-          md:relative md:translate-x-0
+          md:translate-x-0 flex flex-col
           ${sidebarOpen ? "translate-x-0 pt-[56px]" : "-translate-x-full"}
           ${collapsed ? 'md:w-16' : 'md:w-64'}`}
       >
@@ -107,8 +107,8 @@ const DashboardSidebar = () => {
           )}
         </button>
 
-        {/* Menu Sections */}
-        <nav className={`flex flex-col p-4 ${collapsed ? 'px-2' : 'px-4'} gap-6 overflow-y-auto h-[calc(100%-112px)]`}>
+        {/* Menu Sections with overflow handling */}
+        <nav className={`flex flex-col p-4 ${collapsed ? 'px-2' : 'px-4'} gap-6 overflow-y-auto flex-grow`}>
           {/* General Section */}
           <div>
             {!collapsed && (
@@ -146,6 +146,9 @@ const DashboardSidebar = () => {
           </div>
         </nav>
       </aside>
+
+      {/* This div creates space for the sidebar in the layout */}
+      <div className={`hidden md:block ${collapsed ? 'md:w-16' : 'md:w-64'}`}></div>
     </>
   );
 };
