@@ -29,11 +29,6 @@ import {
 } from "../Dashboard/data/data"
 
 function Dashboard() {
-  // State for notifications dropdown
-  const [notificationsOpen, setNotificationsOpen] = useState(false)
-
-  // State for user dropdown
-  const [userMenuOpen, setUserMenuOpen] = useState(false)
 
   // State for screen size
   const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -181,8 +176,8 @@ function Dashboard() {
         setNrcData(nrcDataByPeriod.lastMonth)
         setPieData(generatePieData(nrcDataByPeriod.lastMonth))
       } else if (filterOptions.timePeriod === "custom") {
-        // For custom date range, we would filter based on the date range
-        // For demo purposes, we'll use a subset of the data
+        // For custom date range, filter based on the date range
+        // For demo purposes, use a subset of the data
         filteredData = activitiesData.slice(0, 15)
 
         // Calculate NRC data from filtered activities
@@ -237,7 +232,7 @@ function Dashboard() {
     }
   }
 
-  // Refresh handler
+  // Refresh handler. When applied refetch the data from the database when the backend is connected
   const handleRefresh = () => {
     setIsRefreshing(true)
 
@@ -272,7 +267,7 @@ function Dashboard() {
       setPieData([
         { name: "Accepted", value: newAccepted, color: "#0FA644" },
         { name: "Rejected", value: newRejected, color: "#EF4444" },
-        { name: "Pending", value: newPending, color: "#27418C" },
+        { name: "Pending", value: newPending, color: "#2D3FA6" },
       ])
 
       // Update monthly trend data for the current month
@@ -316,7 +311,7 @@ function Dashboard() {
         return (
           <div className="flex items-center">
             <div className="bg-[#27418C] w-2.5 h-2.5 rounded-full mr-2"></div>
-            <span className="text-[#27418C] font-medium">Pending</span>
+            <span className="text-[#2D3FA6] font-medium">Pending</span>
           </div>
         )
       default:
@@ -369,7 +364,7 @@ function Dashboard() {
     )
   }
 
-  // Check screen size on mount and resize
+  // Checking screen size on mount and resize
   useEffect(() => {
     const checkScreenSize = () => {
       setIsSmallScreen(window.innerWidth < 1024)
@@ -384,18 +379,15 @@ function Dashboard() {
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if ((notificationsOpen || userMenuOpen || filterOpen) && !event.target.closest(".dropdown-container")) {
-        setNotificationsOpen(false)
-        setUserMenuOpen(false)
+      if (filterOpen && !event.target.closest(".dropdown-container")) {
         setFilterOpen(false)
       }
     }
-
     document.addEventListener("mousedown", handleClickOutside)
     return () => {
       document.removeEventListener("mousedown", handleClickOutside)
     }
-  }, [notificationsOpen, userMenuOpen, filterOpen])
+  }, [filterOpen])
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -465,7 +457,7 @@ function Dashboard() {
 
                   {/* Filter dropdown */}
                   {filterOpen && (
-                    <div className="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+                    <div className="absolute left-0 mt-2 w-72 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                       <div className="p-4">
                         <h3 className="text-sm font-medium text-gray-900 mb-3">Filter Options</h3>
 
@@ -618,7 +610,7 @@ function Dashboard() {
 
                 <button
                   type="button"
-                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#27418C] hover:bg-[#27418C]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#27418C]"
+                  className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-[#2D3FA6] hover:bg-[#27418C]/90 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#27418C]"
                 >
                   <Download className="-ml-1 mr-2 h-5 w-5" />
                   Export
@@ -764,7 +756,7 @@ function Dashboard() {
             <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200 h-full flex flex-col">
               <div className="p-5 flex-grow">
                 <div className="flex items-center">
-                  <div className="flex-shrink-0 bg-[#27418C] rounded-md p-3">
+                  <div className="flex-shrink-0 bg-[#2D3FA6] rounded-md p-3">
                     <Clock className="h-6 w-6 text-white" />
                   </div>
                   <div className="ml-5 w-0 flex-1">
@@ -779,7 +771,7 @@ function Dashboard() {
                 <div className="mt-6">
                   <div className="relative h-3 rounded-full overflow-hidden bg-gray-200">
                     <div
-                      className="absolute h-full bg-[#27418C]"
+                      className="absolute h-full bg-[#2D3FA6]"
                       style={{
                         width: `${(nrcData.pending / nrcData.total) * 100}%`,
                       }}
@@ -787,7 +779,7 @@ function Dashboard() {
                   </div>
                   <div className="mt-1.5 flex items-center justify-between text-sm">
                     <span className="text-gray-500">Total Pending:</span>
-                    <span className="text-[#27418C] font-medium">
+                    <span className="text-[#2D3FA6] font-medium">
                       {((nrcData.pending / nrcData.total) * 100).toFixed(1)}%
                     </span>
                   </div>
@@ -795,7 +787,7 @@ function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 mt-auto">
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-[#27418C] hover:text-[#27418C]/80 flex items-center">
+                  <a href="#" className="font-medium text-[#2D3FA6] hover:text-[#2D3FA6]/80 flex items-center">
                     View pending NRC
                     <ArrowRight className="ml-1 h-4 w-4" />
                   </a>
@@ -869,7 +861,7 @@ function Dashboard() {
                       <span className="text-xs text-gray-500">Rejected</span>
                     </div>
                     <div className="flex items-center">
-                      <div className="h-3 w-3 rounded-full bg-[#27418C] mr-1"></div>
+                      <div className="h-3 w-3 rounded-full bg-[#2D3FA6] mr-1"></div>
                       <span className="text-xs text-gray-500">Pending</span>
                     </div>
                   </div>
@@ -893,7 +885,7 @@ function Dashboard() {
                       <Tooltip />
                       <Bar dataKey="accepted" stackId="a" fill="#0FA644" />
                       <Bar dataKey="rejected" stackId="a" fill="#EF4444" />
-                      <Bar dataKey="pending" stackId="a" fill="#27418C" />
+                      <Bar dataKey="pending" stackId="a" fill="#2D3FA6" />
                     </BarChart>
                   </ResponsiveContainer>
                 </div>

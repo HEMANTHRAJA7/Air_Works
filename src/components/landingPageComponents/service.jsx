@@ -153,6 +153,7 @@ const ServiceSection = () => {
 
 export default ServiceSection;
 
+//The below given is also a bento grid uncomment and check and keep the one which is cool
 
 // import React from "react";
 
