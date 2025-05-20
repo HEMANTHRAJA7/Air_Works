@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts"
 import {
@@ -16,7 +14,19 @@ import {
   MoreHorizontal,
   ChevronRight,
   ChevronLeft,
+  X,
+  CalendarRange,
 } from "lucide-react"
+
+import {
+  nrcDataByPeriod,
+  monthlyTrendData,
+  activitiesData,
+  timeAgo,
+  filterActivitiesByPeriod,
+  calculateNrcDataFromActivities,
+  generatePieData,
+} from "../Dashboard/data/data"
 
 function Dashboard() {
   // State for notifications dropdown
@@ -36,159 +46,78 @@ function Dashboard() {
   const [isFiltering, setIsFiltering] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [filterOpen, setFilterOpen] = useState(false)
+
+  // New filter options with time period
   const [filterOptions, setFilterOptions] = useState({
     status: "all",
     priority: "all",
-    date: "all",
+    timePeriod: "thisMonth",
+    customStartDate: "",
+    customEndDate: "",
   })
 
-  // Initial NRC data
-  const initialNrcData = {
-    total: 1248,
-    accepted: 742,
-    rejected: 186,
-    pending: 320,
-    growth: 24.5,
-    reviewed: 928,
-  }
+  // State for showing custom date range inputs
+  const [showCustomDateRange, setShowCustomDateRange] = useState(false)
 
   // State for NRC data
-  const [nrcData, setNrcData] = useState(initialNrcData)
-
-  // Initial monthly trend data
-  const initialMonthlyTrendData = [
-    { name: "Jan", total: 420, accepted: 300, rejected: 40, pending: 80 },
-    { name: "Feb", total: 520, accepted: 350, rejected: 70, pending: 100 },
-    { name: "Mar", total: 620, accepted: 400, rejected: 90, pending: 130 },
-    { name: "Apr", total: 720, accepted: 450, rejected: 110, pending: 160 },
-    { name: "May", total: 820, accepted: 500, rejected: 120, pending: 200 },
-    { name: "Jun", total: 920, accepted: 550, rejected: 150, pending: 220 },
-    { name: "Jul", total: 1020, accepted: 600, rejected: 170, pending: 250 },
-    { name: "Aug", total: 1120, accepted: 650, rejected: 180, pending: 290 },
-    { name: "Sep", total: 1220, accepted: 700, rejected: 190, pending: 330 },
-    { name: "Oct", total: 1248, accepted: 742, rejected: 186, pending: 320 },
-  ]
-
-  // State for monthly trend data
-  const [monthlyTrendData, setMonthlyTrendData] = useState(initialMonthlyTrendData)
-
-  // Initial pie data
-  const initialPieData = [
-    { name: "Accepted", value: initialNrcData.accepted, color: "#0FA644" }, // Green
-    { name: "Rejected", value: initialNrcData.rejected, color: "#EF4444" }, // Red
-    { name: "Pending", value: initialNrcData.pending, color: "#27418C" }, // Changed from #27368C to #27418C
-  ]
-
-  // State for pie data
-  const [pieData, setPieData] = useState(initialPieData)
-
-
-  // Initial activities data
-  const initialActivities = [
-    {
-      id: "NRC-1001",
-      title: "New NRC Submission",
-      status: "Accepted",
-      color: "green",
-      note: "Approved by Rakesh Kumar",
-      updatedDaysAgo: 1,
-      priority: "High",
-    },
-    {
-      id: "NRC-1002",
-      title: "Process Improvement Suggestion",
-      status: "Rejected",
-      color: "red",
-      note: "Rejected by Aryan Singh - Not feasible",
-      updatedDaysAgo: 2,
-      priority: "Medium",
-    },
-    {
-      id: "NRC-1003",
-      title: "Cost Reduction Initiative",
-      status: "Pending",
-      color: "blue",
-      note: "Awaiting review from Finance team",
-      updatedDaysAgo: 3,
-      priority: "High",
-    },
-    {
-      id: "NRC-1004",
-      title: "Safety Protocol Update",
-      status: "Accepted",
-      color: "green",
-      note: "Approved by Aryan Singh - Implementing next week",
-      updatedDaysAgo: 4,
-      priority: "Critical",
-    },
-    {
-      id: "NRC-1005",
-      title: "New Vendor Proposal",
-      status: "Rejected",
-      color: "red",
-      note: "Rejected by Pranav Gupta - Cost concerns",
-      updatedDaysAgo: 5,
-      priority: "Low",
-    },
-    {
-      id: "NRC-1006",
-      title: "Employee Wellness Program",
-      status: "Pending",
-      color: "blue",
-      note: "Awaiting review from HR department",
-      updatedDaysAgo: 6,
-      priority: "Medium",
-    },
-    {
-      id: "NRC-1007",
-      title: "IT Infrastructure Upgrade",
-      status: "Accepted",
-      color: "green",
-      note: "Approved by Pranav Gupta - Scheduled for next month",
-      updatedDaysAgo: 7,
-      priority: "High",
-    },
-    {
-      id: "NRC-1008",
-      title: "Marketing Campaign Proposal",
-      status: "Pending",
-      color: "blue",
-      note: "Under review by Marketing team",
-      updatedDaysAgo: 2,
-      priority: "High",
-    },
-    {
-      id: "NRC-1009",
-      title: "Supply Chain Optimization",
-      status: "Accepted",
-      color: "green",
-      note: "Approved by Logistics head - Implementation in progress",
-      updatedDaysAgo: 3,
-      priority: "Medium",
-    },
-    {
-      id: "NRC-1010",
-      title: "Customer Feedback System",
-      status: "Pending",
-      color: "blue",
-      note: "Awaiting IT department resources",
-      updatedDaysAgo: 4,
-      priority: "Medium",
-    },
-  ]
+  const [nrcData, setNrcData] = useState(nrcDataByPeriod.thisMonth)
 
   // State for activities
-  const [activities, setActivities] = useState(initialActivities)
+  const [activities, setActivities] = useState(filterActivitiesByPeriod(activitiesData, "thisMonth"))
+
+  // State for pie data
+  const [pieData, setPieData] = useState(generatePieData(nrcDataByPeriod.thisMonth))
+
+  // State for visible monthly trend data (current year only)
+  const [visibleMonthlyTrendData, setVisibleMonthlyTrendData] = useState(monthlyTrendData)
+
+  // State for active filters display
+  const [activeFilters, setActiveFilters] = useState([])
+
+  // Update active filters whenever filter options change
+  useEffect(() => {
+    const newActiveFilters = []
+
+    if (filterOptions.timePeriod === "thisMonth") {
+      newActiveFilters.push({ key: "timePeriod", value: "This Month", label: "Time Period" })
+    } else if (filterOptions.timePeriod === "lastMonth") {
+      newActiveFilters.push({ key: "timePeriod", value: "Last Month", label: "Time Period" })
+    } else if (filterOptions.timePeriod === "custom") {
+      newActiveFilters.push({
+        key: "timePeriod",
+        value: `${filterOptions.customStartDate} to ${filterOptions.customEndDate}`,
+        label: "Date Range",
+      })
+    }
+
+    if (filterOptions.status !== "all") {
+      newActiveFilters.push({
+        key: "status",
+        value: filterOptions.status.charAt(0).toUpperCase() + filterOptions.status.slice(1),
+        label: "Status",
+      })
+    }
+
+    if (filterOptions.priority !== "all") {
+      newActiveFilters.push({
+        key: "priority",
+        value: filterOptions.priority.charAt(0).toUpperCase() + filterOptions.priority.slice(1),
+        label: "Priority",
+      })
+    }
+
+    setActiveFilters(newActiveFilters)
+  }, [filterOptions])
 
   // Filter activities based on filter options
   const filteredActivities = activities.filter((activity) => {
     const matchesStatus =
       filterOptions.status === "all" || activity.status.toLowerCase() === filterOptions.status.toLowerCase()
+
     const matchesPriority =
       filterOptions.priority === "all" || activity.priority.toLowerCase() === filterOptions.priority.toLowerCase()
-    const matchesDate = filterOptions.date === "all" || activity.updatedDaysAgo <= Number.parseInt(filterOptions.date)
 
-    return matchesStatus && matchesPriority && matchesDate
+    return matchesStatus && matchesPriority
   })
 
   // Calculate pagination
@@ -220,12 +149,49 @@ function Dashboard() {
     setFilterOpen(!filterOpen)
   }
 
+  // Handle time period change
+  const handleTimePeriodChange = (period) => {
+    setFilterOptions({
+      ...filterOptions,
+      timePeriod: period,
+    })
+
+    if (period === "custom") {
+      setShowCustomDateRange(true)
+    } else {
+      setShowCustomDateRange(false)
+    }
+  }
+
   // Apply filter
   const applyFilter = () => {
     setIsFiltering(true)
 
     // Simulate filtering process
     setTimeout(() => {
+      // Apply time period filter
+      let filteredData
+
+      if (filterOptions.timePeriod === "thisMonth") {
+        filteredData = filterActivitiesByPeriod(activitiesData, "thisMonth")
+        setNrcData(nrcDataByPeriod.thisMonth)
+        setPieData(generatePieData(nrcDataByPeriod.thisMonth))
+      } else if (filterOptions.timePeriod === "lastMonth") {
+        filteredData = filterActivitiesByPeriod(activitiesData, "lastMonth")
+        setNrcData(nrcDataByPeriod.lastMonth)
+        setPieData(generatePieData(nrcDataByPeriod.lastMonth))
+      } else if (filterOptions.timePeriod === "custom") {
+        // For custom date range, we would filter based on the date range
+        // For demo purposes, we'll use a subset of the data
+        filteredData = activitiesData.slice(0, 15)
+
+        // Calculate NRC data from filtered activities
+        const calculatedNrcData = calculateNrcDataFromActivities(filteredData)
+        setNrcData(calculatedNrcData)
+        setPieData(generatePieData(calculatedNrcData))
+      }
+
+      setActivities(filteredData)
       setIsFiltering(false)
       setFilterOpen(false)
     }, 800)
@@ -236,8 +202,39 @@ function Dashboard() {
     setFilterOptions({
       status: "all",
       priority: "all",
-      date: "all",
+      timePeriod: "thisMonth",
+      customStartDate: "",
+      customEndDate: "",
     })
+
+    setShowCustomDateRange(false)
+
+    // Reset data to this month
+    setNrcData(nrcDataByPeriod.thisMonth)
+    setPieData(generatePieData(nrcDataByPeriod.thisMonth))
+    setActivities(filterActivitiesByPeriod(activitiesData, "thisMonth"))
+  }
+
+  // Remove a specific filter
+  const removeFilter = (key) => {
+    if (key === "timePeriod") {
+      setFilterOptions({
+        ...filterOptions,
+        timePeriod: "thisMonth",
+        customStartDate: "",
+        customEndDate: "",
+      })
+
+      setShowCustomDateRange(false)
+      setNrcData(nrcDataByPeriod.thisMonth)
+      setPieData(generatePieData(nrcDataByPeriod.thisMonth))
+      setActivities(filterActivitiesByPeriod(activitiesData, "thisMonth"))
+    } else {
+      setFilterOptions({
+        ...filterOptions,
+        [key]: "all",
+      })
+    }
   }
 
   // Refresh handler
@@ -253,18 +250,20 @@ function Dashboard() {
       }
 
       // Update NRC data with variations
-      const newAccepted = variation(initialNrcData.accepted)
-      const newRejected = variation(initialNrcData.rejected)
-      const newPending = variation(initialNrcData.pending)
+      const currentNrcData = { ...nrcData }
+      const newAccepted = variation(currentNrcData.accepted)
+      const newRejected = variation(currentNrcData.rejected)
+      const newPending = variation(currentNrcData.pending)
       const newTotal = newAccepted + newRejected + newPending
 
       const updatedNrcData = {
-        ...initialNrcData,
+        ...currentNrcData,
         total: newTotal,
         accepted: newAccepted,
         rejected: newRejected,
         pending: newPending,
-        growth: (((newTotal - initialNrcData.total) / initialNrcData.total) * 100).toFixed(1),
+        growth: (((newTotal - currentNrcData.total) / currentNrcData.total) * 100).toFixed(1),
+        reviewed: newAccepted + newRejected,
       }
 
       setNrcData(updatedNrcData)
@@ -276,23 +275,21 @@ function Dashboard() {
         { name: "Pending", value: newPending, color: "#27418C" },
       ])
 
-      // Update monthly trend data
-      const newMonthlyTrendData = [...initialMonthlyTrendData]
-      newMonthlyTrendData[newMonthlyTrendData.length - 1] = {
-        ...newMonthlyTrendData[newMonthlyTrendData.length - 1],
-        total: newTotal,
-        accepted: newAccepted,
-        rejected: newRejected,
-        pending: newPending,
-      }
-      setMonthlyTrendData(newMonthlyTrendData)
+      // Update monthly trend data for the current month
+      const newMonthlyTrendData = [...monthlyTrendData]
+      const currentMonthIndex = new Date().getMonth()
 
-      // Update activities with random variations in days
-      const newActivities = initialActivities.map((activity) => ({
-        ...activity,
-        updatedDaysAgo: Math.max(1, variation(activity.updatedDaysAgo) % 10), // Keep between 1 and 9 days
-      }))
-      setActivities(newActivities)
+      if (newMonthlyTrendData[currentMonthIndex]) {
+        newMonthlyTrendData[currentMonthIndex] = {
+          ...newMonthlyTrendData[currentMonthIndex],
+          total: newTotal,
+          accepted: newAccepted,
+          rejected: newRejected,
+          pending: newPending,
+        }
+      }
+
+      setVisibleMonthlyTrendData(newMonthlyTrendData)
 
       setIsRefreshing(false)
     }, 1000)
@@ -421,6 +418,36 @@ function Dashboard() {
                     from last period
                   </div>
                 </div>
+
+                {/* Active filters display */}
+                {activeFilters.length > 0 && (
+                  <div className="mt-3 flex flex-wrap gap-2">
+                    {activeFilters.map((filter, index) => (
+                      <div
+                        key={index}
+                        className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#27418C]/10 text-[#27418C]"
+                      >
+                        <span className="mr-1 text-gray-500">{filter.label}:</span>
+                        {filter.value}
+                        <button
+                          onClick={() => removeFilter(filter.key)}
+                          className="ml-1 text-gray-400 hover:text-[#27418C]"
+                        >
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    ))}
+
+                    {activeFilters.length > 0 && (
+                      <button
+                        onClick={resetFilter}
+                        className="text-xs text-[#27418C] hover:text-[#27418C]/80 underline"
+                      >
+                        Clear all
+                      </button>
+                    )}
+                  </div>
+                )}
               </div>
               <div className="mt-6 flex flex-wrap gap-2 md:mt-0 md:ml-4">
                 {/* Filter button and dropdown */}
@@ -438,9 +465,72 @@ function Dashboard() {
 
                   {/* Filter dropdown */}
                   {filterOpen && (
-                    <div className="absolute right-0 mt-2 w-64 bg-white rounded-md shadow-lg z-10 border border-gray-200">
+                    <div className="absolute right-0 mt-2 w-72 bg-white rounded-md shadow-lg z-10 border border-gray-200">
                       <div className="p-4">
                         <h3 className="text-sm font-medium text-gray-900 mb-3">Filter Options</h3>
+
+                        {/* Time period filter */}
+                        <div className="mb-3">
+                          <label htmlFor="time-period-filter" className="block text-xs font-medium text-gray-700 mb-1">
+                            Time Period
+                          </label>
+                          <select
+                            id="time-period-filter"
+                            value={filterOptions.timePeriod}
+                            onChange={(e) => handleTimePeriodChange(e.target.value)}
+                            className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#27418C]"
+                          >
+                            <option value="thisMonth">This Month</option>
+                            <option value="lastMonth">Last Month</option>
+                            <option value="custom">Custom Range</option>
+                          </select>
+                        </div>
+
+                        {/* Custom date range */}
+                        {showCustomDateRange && (
+                          <div className="mb-3 p-2 bg-gray-50 rounded-md">
+                            <div className="flex items-center mb-2">
+                              <CalendarRange className="h-4 w-4 text-gray-500 mr-1" />
+                              <span className="text-xs font-medium text-gray-700">Custom Date Range</span>
+                            </div>
+                            <div className="grid grid-cols-2 gap-2">
+                              <div>
+                                <label htmlFor="start-date" className="block text-xs text-gray-500 mb-1">
+                                  Start Date
+                                </label>
+                                <input
+                                  type="date"
+                                  id="start-date"
+                                  value={filterOptions.customStartDate}
+                                  onChange={(e) =>
+                                    setFilterOptions({
+                                      ...filterOptions,
+                                      customStartDate: e.target.value,
+                                    })
+                                  }
+                                  className="w-full rounded-md border border-gray-300 py-1 px-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#27418C]"
+                                />
+                              </div>
+                              <div>
+                                <label htmlFor="end-date" className="block text-xs text-gray-500 mb-1">
+                                  End Date
+                                </label>
+                                <input
+                                  type="date"
+                                  id="end-date"
+                                  value={filterOptions.customEndDate}
+                                  onChange={(e) =>
+                                    setFilterOptions({
+                                      ...filterOptions,
+                                      customEndDate: e.target.value,
+                                    })
+                                  }
+                                  className="w-full rounded-md border border-gray-300 py-1 px-2 text-xs focus:outline-none focus:ring-2 focus:ring-[#27418C]"
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        )}
 
                         {/* Status filter */}
                         <div className="mb-3">
@@ -450,7 +540,12 @@ function Dashboard() {
                           <select
                             id="status-filter"
                             value={filterOptions.status}
-                            onChange={(e) => setFilterOptions({ ...filterOptions, status: e.target.value })}
+                            onChange={(e) =>
+                              setFilterOptions({
+                                ...filterOptions,
+                                status: e.target.value,
+                              })
+                            }
                             className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#27418C]"
                           >
                             <option value="all">All Statuses</option>
@@ -461,14 +556,19 @@ function Dashboard() {
                         </div>
 
                         {/* Priority filter */}
-                        <div className="mb-3">
+                        <div className="mb-4">
                           <label htmlFor="priority-filter" className="block text-xs font-medium text-gray-700 mb-1">
                             Priority
                           </label>
                           <select
                             id="priority-filter"
                             value={filterOptions.priority}
-                            onChange={(e) => setFilterOptions({ ...filterOptions, priority: e.target.value })}
+                            onChange={(e) =>
+                              setFilterOptions({
+                                ...filterOptions,
+                                priority: e.target.value,
+                              })
+                            }
                             className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#27418C]"
                           >
                             <option value="all">All Priorities</option>
@@ -476,24 +576,6 @@ function Dashboard() {
                             <option value="high">High</option>
                             <option value="medium">Medium</option>
                             <option value="low">Low</option>
-                          </select>
-                        </div>
-
-                        {/* Date filter */}
-                        <div className="mb-4">
-                          <label htmlFor="date-filter" className="block text-xs font-medium text-gray-700 mb-1">
-                            Updated Within
-                          </label>
-                          <select
-                            id="date-filter"
-                            value={filterOptions.date}
-                            onChange={(e) => setFilterOptions({ ...filterOptions, date: e.target.value })}
-                            className="w-full rounded-md border border-gray-300 py-1.5 px-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#27418C]"
-                          >
-                            <option value="all">Any Time</option>
-                            <option value="1">Last 24 Hours</option>
-                            <option value="3">Last 3 Days</option>
-                            <option value="7">Last Week</option>
                           </select>
                         </div>
 
@@ -524,7 +606,9 @@ function Dashboard() {
                   type="button"
                   onClick={handleRefresh}
                   disabled={isRefreshing}
-                  className={`inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#27418C] ${isRefreshing ? "opacity-75 cursor-not-allowed" : ""}`}
+                  className={`inline-flex items-center px-4 py-2 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#27418C] ${
+                    isRefreshing ? "opacity-75 cursor-not-allowed" : ""
+                  }`}
                 >
                   <RefreshCw
                     className={`-ml-1 mr-2 h-5 w-5 ${isRefreshing ? "animate-spin text-[#27418C]" : "text-gray-500"}`}
@@ -567,11 +651,13 @@ function Dashboard() {
                   <div className="relative h-3 rounded-full overflow-hidden bg-gray-200">
                     <div
                       className="absolute h-full bg-[#27418C]"
-                      style={{ width: `${(nrcData.reviewed / nrcData.total) * 100}%` }}
+                      style={{
+                        width: `${(nrcData.reviewed / nrcData.total) * 100}%`,
+                      }}
                     ></div>
                   </div>
                   <div className="mt-1.5 flex items-center justify-between text-sm">
-                    <span className="text-gray-500">Toatl Reviewed: </span>
+                    <span className="text-gray-500">Total Reviewed: </span>
                     <span className="text-[#27418C] font-medium">
                       {((nrcData.reviewed / nrcData.total) * 100).toFixed(1)}%
                     </span>
@@ -608,7 +694,9 @@ function Dashboard() {
                   <div className="relative h-3 rounded-full overflow-hidden bg-gray-200">
                     <div
                       className="absolute h-full bg-[#0FA644]"
-                      style={{ width: `${(nrcData.accepted / nrcData.total) * 100}%` }}
+                      style={{
+                        width: `${(nrcData.accepted / nrcData.total) * 100}%`,
+                      }}
                     ></div>
                   </div>
                   <div className="mt-1.5 flex items-center justify-between text-sm">
@@ -649,7 +737,9 @@ function Dashboard() {
                   <div className="relative h-3 rounded-full overflow-hidden bg-gray-200">
                     <div
                       className="absolute h-full bg-red-500"
-                      style={{ width: `${(nrcData.rejected / nrcData.total) * 100}%` }}
+                      style={{
+                        width: `${(nrcData.rejected / nrcData.total) * 100}%`,
+                      }}
                     ></div>
                   </div>
                   <div className="mt-1.5 flex items-center justify-between text-sm">
@@ -690,7 +780,9 @@ function Dashboard() {
                   <div className="relative h-3 rounded-full overflow-hidden bg-gray-200">
                     <div
                       className="absolute h-full bg-[#27418C]"
-                      style={{ width: `${(nrcData.pending / nrcData.total) * 100}%` }}
+                      style={{
+                        width: `${(nrcData.pending / nrcData.total) * 100}%`,
+                      }}
                     ></div>
                   </div>
                   <div className="mt-1.5 flex items-center justify-between text-sm">
@@ -718,7 +810,18 @@ function Dashboard() {
             <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
               <div className="px-5 py-4 border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 mb-2 sm:mb-0">NRC Status Distribution</h3>
+                  <h3 className="text-lg font-medium leading-6 text-gray-900 mb-2 sm:mb-0">
+                    NRC Status Distribution
+                    {filterOptions.timePeriod === "thisMonth" && (
+                      <span className="text-gray-400 text-sm ml-2">(This Month)</span>
+                    )}
+                    {filterOptions.timePeriod === "lastMonth" && (
+                      <span className="text-gray-400 text-sm ml-2">(Last Month)</span>
+                    )}
+                    {filterOptions.timePeriod === "custom" && (
+                      <span className="text-gray-400 text-sm ml-2">(Custom Range)</span>
+                    )}
+                  </h3>
                   {renderPieChartLegend()}
                 </div>
               </div>
@@ -753,7 +856,9 @@ function Dashboard() {
             <div className="bg-white overflow-hidden shadow rounded-lg border border-gray-200">
               <div className="px-5 py-4 border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                  <h3 className="text-lg font-medium leading-6 text-gray-900 mb-2 sm:mb-0">Monthly Trend</h3>
+                  <h3 className="text-lg font-medium leading-6 text-gray-900 mb-2 sm:mb-0">
+                    Monthly Trend <span className="text-gray-400 text-sm">(This year)</span>{" "}
+                  </h3>
                   <div className="flex flex-wrap items-center gap-3">
                     <div className="flex items-center">
                       <div className="h-3 w-3 rounded-full bg-[#0FA644] mr-1"></div>
@@ -774,7 +879,7 @@ function Dashboard() {
                 <div className="h-80">
                   <ResponsiveContainer width="100%" height="100%">
                     <BarChart
-                      data={monthlyTrendData}
+                      data={visibleMonthlyTrendData}
                       margin={{
                         top: 20,
                         right: 30,
@@ -800,15 +905,35 @@ function Dashboard() {
           <div className="mt-8 bg-white shadow overflow-hidden rounded-lg border border-gray-200">
             <div className="px-5 py-4 border-b border-gray-200">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-medium leading-6 text-gray-900">Recent Activity</h3>
-                {filterOptions.status !== "all" || filterOptions.priority !== "all" || filterOptions.date !== "all" ? (
+                <h3 className="text-lg font-medium leading-6 text-gray-900">
+                  Recent Activity
+                  {filterOptions.timePeriod === "thisMonth" && (
+                    <span className="text-gray-400 text-sm ml-2">(This Month)</span>
+                  )}
+                  {filterOptions.timePeriod === "lastMonth" && (
+                    <span className="text-gray-400 text-sm ml-2">(Last Month)</span>
+                  )}
+                  {filterOptions.timePeriod === "custom" && (
+                    <span className="text-gray-400 text-sm ml-2">(Custom Range)</span>
+                  )}
+                </h3>
+                {(filterOptions.status !== "all" || filterOptions.priority !== "all") && (
                   <div className="flex items-center space-x-2">
                     <span className="text-sm text-gray-500">Filtered</span>
-                    <button onClick={resetFilter} className="text-xs text-[#27418C] hover:text-[#27418C]/80">
+                    <button
+                      onClick={() => {
+                        setFilterOptions({
+                          ...filterOptions,
+                          status: "all",
+                          priority: "all",
+                        })
+                      }}
+                      className="text-xs text-[#27418C] hover:text-[#27418C]/80"
+                    >
                       Clear
                     </button>
                   </div>
-                ) : null}
+                )}
               </div>
             </div>
             <div className="bg-white overflow-hidden">
@@ -869,7 +994,7 @@ function Dashboard() {
                             {getStatusIcon(activity.status)}
                             {getPriorityBadge(activity.priority)}
                           </div>
-                          <span className="text-xs text-gray-500">{activity.updatedDaysAgo}d ago</span>
+                          <span className="text-xs text-gray-500">{timeAgo(activity.updatedAt)}</span>
                           <button className="text-gray-400 hover:text-gray-500">
                             <MoreHorizontal className="h-5 w-5" />
                           </button>
