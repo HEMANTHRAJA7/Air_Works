@@ -295,23 +295,23 @@ function Dashboard() {
     switch (status) {
       case "Accepted":
         return (
-          <div className="flex items-center">
-            <div className="bg-[#0FA644] w-2.5 h-2.5 rounded-full mr-2"></div>
-            <span className="text-[#0FA644] font-medium">Accepted</span>
+          <div className="flex items-center bg-[#0FA644]/10 p-1 px-2 rounded-full">
+            <div className="bg-[#0FA644] w-2 h-2 rounded-full mr-2"></div>
+            <span className="text-[#0FA644] font-medium text-xs">Accepted</span>
           </div>
         )
       case "Rejected":
         return (
-          <div className="flex items-center">
-            <div className="bg-red-500 w-2.5 h-2.5 rounded-full mr-2"></div>
-            <span className="text-red-500 font-medium">Rejected</span>
+          <div className="flex items-center bg-red-100 p-1 px-2 rounded-full">
+            <div className="bg-red-500 w-2 h-2 rounded-full mr-2"></div>
+            <span className="text-red-500 font-medium text-xs">Rejected</span>
           </div>
         )
       case "Pending":
         return (
-          <div className="flex items-center">
-            <div className="bg-[#27418C] w-2.5 h-2.5 rounded-full mr-2"></div>
-            <span className="text-[#2D3FA6] font-medium">Pending</span>
+          <div className="flex items-center bg-[#27418C]/10 p-1 px-2 rounded-full">
+            <div className="bg-[#27418C] w-2 h-2 rounded-full mr-2"></div>
+            <span className="text-[#2D3FA6] font-medium text-xs">Pending</span>
           </div>
         )
       default:
@@ -392,7 +392,7 @@ function Dashboard() {
   return (
     <div className="bg-gray-50 min-h-screen">
       {/* Main content area */}
-      <main className="max-w-7xl mx-auto px-4 py-6 sm:px-6 lg:px-8">
+      <main className=" mx-auto px-4 py-6 sm:px-6 lg:px-8">
         {/* Page header */}
         <div className="bg-white shadow mb-6 rounded-lg">
           <div className="px-4 sm:px-6 lg:max-w-7xl lg:mx-auto lg:px-8">
