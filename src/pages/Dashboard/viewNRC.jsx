@@ -298,7 +298,9 @@ const ViewNRC = () => {
         {/* header */}
         <div className="bg-white shadow mb-7 rounded-lg">
           <div className="max-w-7xl mx-auto py-6  sm:px-6 lg:px-8">
-            <h1 className="text-3xl font-bold text-gray-900">Search NRCs</h1>
+            <h1 className="text-3xl font-bold text-gray-900 px-3 lg:px-0">
+              Search NRCs
+            </h1>
           </div>
         </div>
 
@@ -313,7 +315,7 @@ const ViewNRC = () => {
                   </div>
                   <input
                     type="text"
-                    className="w-full p-4 pl-10 pr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full p-4 pl-10 pr-4 text-sm text-gray-900 border border-gray-300 rounded-lg bg-white focus:outline-none focus:ring-1 focus:ring-[#2D3FA6]"
                     placeholder="Search by aircraft number, NRC number, status, priority..."
                     value={searchQuery}
                     onChange={(e) => setSearchQuery(e.target.value)}

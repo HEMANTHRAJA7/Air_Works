@@ -849,7 +849,7 @@ function Dashboard() {
               <div className="px-5 py-4 border-b border-gray-200">
                 <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                   <h3 className="text-lg font-medium leading-6 text-gray-900 mb-2 sm:mb-0">
-                    Monthly Trend <span className="text-gray-400 text-sm">(This year)</span>{" "}
+                    Monthly Trend <span className="text-gray-400 text-sm">(This Year)</span>{" "}
                   </h3>
                   <div className="flex flex-wrap items-center gap-3">
                     <div className="flex items-center">
@@ -875,7 +875,7 @@ function Dashboard() {
                       margin={{
                         top: 20,
                         right: 30,
-                        left: 20,
+                        left: 5,
                         bottom: 5,
                       }}
                     >
