@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import Logo from "../../assets/logo.jpg"
 import LogoOnly from "../../assets/logo_only.png"
-import { Home, Eye, Clock, CornerDownLeft, User, Settings, FileText, Bell, Activity, LogOut, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Eye, User, Settings, FileText, Bell, Activity, LogOut, Menu, X, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const DashboardSidebar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -24,8 +24,6 @@ const DashboardSidebar = () => {
   const generalMenu = [
     { to: "/dashboard/home", label: "Dashboard", icon: Home },
     { to: "/dashboard/view-nrc", label: "View NRC", icon: Eye },
-    { to: "/dashboard/pending-nrc", label: "Pending NRC", icon: Clock },
-    { to: "/dashboard/send-back", label: "Send Back", icon: CornerDownLeft },
   ];
 
   const extraMenu = [
@@ -54,7 +52,7 @@ const DashboardSidebar = () => {
       }
       title={collapsed ? label : ""}
     >
-      <Icon className="w-5 h-5" />
+      {Icon && <Icon className="w-5 h-5" />}
       {!collapsed && <span>{label}</span>}
     </NavLink>
   );

@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 
 const Navbar = () => {
   const [mobileDrawerOpen, setMobileDrawerOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  // const [scrolled, setScrolled] = useState(false);
 
   // Reference for mobile menu
   const mobileMenuRef = useRef(null);
@@ -14,11 +14,7 @@ const Navbar = () => {
   };
 
   const handleScroll = () => {
-    if (window.scrollY > 30) {
-      setScrolled(true);
-    } else {
-      setScrolled(false);
-    }
+    // This function is kept for future use if scroll-based logic is needed
   };
 
   // Close the mobile menu if click happens outside
@@ -75,7 +71,7 @@ const Navbar = () => {
         <div className="hidden lg:flex items-center space-x-4">
           <a
             href="/signin"
-            className="py-1 px-3 border border-black rounded-md hover:bg-[#2E8C4F] hover:text-white transition-all"
+            className="py-1 px-3 border border-black rounded-md hover:bg-[#2E8C4F] hover:border-white hover:text-white transition-all"
           >
             Sign In
           </a>

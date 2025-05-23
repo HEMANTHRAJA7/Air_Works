@@ -296,7 +296,7 @@ const ViewNRC = () => {
     <div className=" bg-gray-50">
       <main className="mx-auto sm:px-6 py-6 flex flex-col">
         {/* header */}
-        <div className="bg-white shadow mb-7">
+        <div className="bg-white shadow mb-7 rounded-lg">
           <div className="max-w-7xl mx-auto py-6  sm:px-6 lg:px-8">
             <h1 className="text-3xl font-bold text-gray-900">Search NRCs</h1>
           </div>
@@ -321,7 +321,7 @@ const ViewNRC = () => {
                 </div>
                 <button
                   type="submit"
-                  className="bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2 text-white"
+                  className="bg-blue-600 hover:bg-[#2D3FA6] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-6 py-2 text-white"
                 >
                   Search
                 </button>
