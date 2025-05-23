@@ -8,8 +8,11 @@ import CreateAccount from "./pages/createAccount";
 import DashboardLayout from "./components/DashboardComponents/dashboardLayout";
 import HomeDashboard from "./pages/Dashboard/home"; 
 import ViewNRC from "./pages/Dashboard/viewNRC";    
-import PendingNRC from "./pages/Dashboard/pendingNRC";
-import SendBack from "./pages/Dashboard/sendBack";
+import Reports from "./pages/Dashboard/reports";
+import Notifications from "./pages/Dashboard/notifications";
+import ActivityLog from "./pages/Dashboard/activityLog";
+import Profile from "./pages/Dashboard/profile";
+import Settings from "./pages/Dashboard/settings";
 
 const App = () => {
   return (
@@ -25,8 +28,11 @@ const App = () => {
           <Route index element={<Navigate to="home" />} />
           <Route path="home" element={<HomeDashboard />} />
           <Route path="view-nrc" element={<ViewNRC />} />
-          <Route path="pending-nrc" element={<PendingNRC />} />
-          <Route path="send-back" element={<SendBack />} />
+          <Route path="reports" element={<Reports />} />
+          <Route path="notifications" element={<Notifications />} />
+          <Route path="activity-log" element={<ActivityLog />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="settings" element={<Settings />} />
         </Route>
       </Routes>
     </BrowserRouter>
