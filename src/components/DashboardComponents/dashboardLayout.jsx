@@ -1,4 +1,3 @@
-import React from "react";
 import { Outlet } from "react-router-dom"; // Outlet will render nested routes
 import DashboardSidebar from "./dashboardSidebar";
 

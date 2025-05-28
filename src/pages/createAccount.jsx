@@ -158,7 +158,7 @@ const SignupForm = () => {
 
     // Validate all fields
     let formIsValid = true;
-    let newErrors = {};
+    //let newErrors = {};
 
     Object.keys(formData).forEach((field) => {
       if (!validateField(field, formData[field])) {

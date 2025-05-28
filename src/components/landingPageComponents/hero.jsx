@@ -1,4 +1,3 @@
-import React from 'react';
 import Image from "../../assets/logo_bg_removed.png"
 
 const Hero = () => {

@@ -1,4 +1,3 @@
-// Initial NRC data for different time periods
 export const nrcDataByPeriod = {
   thisMonth: {
     total: 1248,

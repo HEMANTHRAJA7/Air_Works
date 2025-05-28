@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "../assets/draw2.jpg";
 
 const Signin = () => {

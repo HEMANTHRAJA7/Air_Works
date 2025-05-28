@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Plane,
   Settings,
@@ -7,7 +6,6 @@ import {
   ShieldCheck,
 } from "lucide-react";
 
-import { useState } from "react";
 const PlaneIcon = () => (
   <Plane className="h-10 w-10 text-teal-600 group-hover:text-teal-700" />
 );
@@ -33,7 +31,7 @@ const ShieldIcon2 = () => (
 );
 
 const ServiceSection = () => {
-  const [hoveredCard, setHoveredCard] = useState(null);
+  // Removed unused hoveredCard state
 
   const services = [
     {
@@ -106,8 +104,7 @@ const ServiceSection = () => {
             className={`group relative rounded-2xl service-card ${
               service.size === "large" ? "md:row-span-2" : "md:row-span-1"
             }`}
-            onMouseEnter={() => setHoveredCard(index)}
-            onMouseLeave={() => setHoveredCard(null)}
+  
           >
             <div className="absolute inset-0 bg-gradient-to-br from-transparent to-transparent group-hover:from-teal-50 group-hover:to-blue-50 rounded-2xl transition-all duration-500 opacity-0 group-hover:opacity-100"></div>
             <div className="absolute inset-0 border-2 border-gray-100 group-hover:border-transparent rounded-2xl z-0 transition-all duration-300"></div>

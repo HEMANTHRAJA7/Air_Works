@@ -1,4 +1,3 @@
-// Mock data for NRCs with comprehensive details
 export const mockNrcData = [
   {
     id: "1",
