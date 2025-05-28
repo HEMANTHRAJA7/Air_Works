@@ -13,6 +13,8 @@ import Notifications from "./pages/Dashboard/notifications";
 import ActivityLog from "./pages/Dashboard/activityLog";
 import Profile from "./pages/Dashboard/profile";
 import Settings from "./pages/Dashboard/settings";
+import NrcDetail from "./components/DashboardComponents/NrcModel"
+
 
 const App = () => {
   return (
@@ -28,6 +30,7 @@ const App = () => {
           <Route index element={<Navigate to="home" />} />
           <Route path="home" element={<HomeDashboard />} />
           <Route path="view-nrc" element={<ViewNRC />} />
+          <Route path="view-nrc/:nrcId" element={<NrcDetail />} />
           <Route path="reports" element={<Reports />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="activity-log" element={<ActivityLog />} />
