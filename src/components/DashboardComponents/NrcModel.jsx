@@ -13,7 +13,10 @@ import {
   Clock,
   User,
   FileText,
-  ImageIcon,
+  QrCode,
+  Wrench,
+  Timer,
+  Settings,
 } from "lucide-react"
 
 import { mockNrcData } from "../../pages/Dashboard/data/nrc-data"
@@ -35,50 +38,6 @@ const NrcDetail = () => {
     setLoading(false)
   }, [nrcId])
 
-  // Helper functions
-  const getPriorityColor = (priority) => {
-    switch (priority.toLowerCase()) {
-      case "critical":
-        return "bg-red-100 text-red-800 border-red-200"
-      case "high":
-        return "bg-orange-100 text-orange-800 border-orange-200"
-      case "medium":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200"
-      case "low":
-        return "bg-green-100 text-green-800 border-green-200"
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200"
-    }
-  }
-
-  const getPriorityIcon = (priority) => {
-    switch (priority.toLowerCase()) {
-      case "critical":
-        return <AlertTriangle className="w-5 h-5 mr-2 text-red-800" />
-      case "high":
-        return <AlertTriangle className="w-5 h-5 mr-2 text-orange-800" />
-      case "medium":
-        return <Clock className="w-5 h-5 mr-2 text-yellow-800" />
-      case "low":
-        return <Clock className="w-5 h-5 mr-2 text-green-800" />
-      default:
-        return null
-    }
-  }
-
-  const getStatusColor = (status) => {
-    switch (status.toLowerCase()) {
-      case "accepted":
-        return "bg-green-100 text-green-800 border-green-200"
-      case "rejected":
-        return "bg-red-100 text-red-800 border-red-200"
-      case "pending":
-        return "bg-blue-100 text-blue-800 border-blue-200"
-      default:
-        return "bg-gray-100 text-gray-800 border-gray-200"
-    }
-  }
-
   const handleNrcAction = (action, feedbackText = "") => {
     if (!nrc) return
 
@@ -90,7 +49,6 @@ const NrcDetail = () => {
       feedback: feedbackText || prev.feedback,
     }))
 
-    // You might want to make an API call here to update the backend
     console.log(`NRC ${nrc.id} ${action}ed`, { feedbackText })
   }
 
@@ -125,7 +83,7 @@ const NrcDetail = () => {
           <p className="text-gray-600 mb-6">The requested NRC could not be found.</p>
           <button
             onClick={handleGoBack}
-            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+            className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
           >
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to NRC List
@@ -136,221 +94,402 @@ const NrcDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <div className="bg-white shadow-sm border-b">
+    <div className="min-h-screen bg-gray-100">
+      {/* Sticky Header with Actions */}
+      <div className="sticky top-0 z-50 bg-white shadow-lg border-b-2 border-blue-600">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center">
+            <div className="flex items-center space-x-4">
               <button
                 onClick={handleGoBack}
-                className="inline-flex items-center px-3 py-2 border border-gray-300 shadow-sm text-sm leading-4 font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+                className="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
                 <ArrowLeft className="w-4 h-4 mr-2" />
-                Back to List
+                Back
               </button>
-              <div className="ml-6">
-                <h1 className="text-2xl font-bold text-gray-900">NRC Details - {nrc.nrcNumber}</h1>
-              </div>
+              <div className="h-8 w-px bg-gray-300"></div>
+              <h1 className="text-xl font-bold text-gray-900">UPDATE NRC</h1>
             </div>
+
             <div className="flex items-center space-x-3">
-              <span
-                className={`px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full border ${getStatusColor(
-                  nrc.status,
-                )}`}
+              {nrc.status === "pending" && (
+                <>
+                  <button
+                    onClick={() => handleNrcAction("accept")}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
+                  >
+                    <Check className="w-4 h-4 mr-2" />
+                    Accept
+                  </button>
+                  <button
+                    onClick={() => handleNrcAction("reject")}
+                    className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+                  >
+                    <X className="w-4 h-4 mr-2" />
+                    Reject
+                  </button>
+                </>
+              )}
+              <button
+                onClick={() => setShowFeedbackForm(!showFeedbackForm)}
+                className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
               >
-                {nrc.status.toUpperCase()}
-              </span>
+                <MessageSquare className="w-4 h-4 mr-2" />
+                Feedback
+              </button>
             </div>
           </div>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Main Details */}
-          <div className="lg:col-span-2 space-y-6">
-            {/* Basic Information Card */}
-            <div className="bg-white shadow rounded-lg overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">Basic Information</h3>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
+        {/* Feedback Form */}
+        {showFeedbackForm && (
+          <div className="mb-6 bg-white rounded-lg shadow-md border border-blue-200">
+            <div className="px-6 py-4 border-b border-gray-200 bg-blue-50">
+              <h3 className="text-lg font-medium text-gray-900">Add Feedback</h3>
+            </div>
+            <div className="px-6 py-4">
+              <textarea
+                rows={4}
+                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                placeholder="Enter your feedback, suggestion or query..."
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
+              />
+              <div className="mt-4 flex justify-end space-x-3">
+                <button
+                  onClick={() => setShowFeedbackForm(false)}
+                  className="px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleSubmitFeedback}
+                  disabled={!feedback.trim()}
+                  className="px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Submit Feedback
+                </button>
               </div>
-              <div className="px-6 py-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          {/* Main Form Content */}
+          <div className="lg:col-span-3 space-y-6">
+            {/* Basic Information Section */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="px-6 py-4 bg-blue-50 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <FileText className="w-5 h-5 mr-2 text-blue-600" />
+                  NRC Information
+                </h3>
+              </div>
+              <div className="px-6 py-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">NRC Number</label>
-                    <div className="mt-1 flex items-center">
-                      <FileText className="w-5 h-5 mr-2 text-gray-400" />
-                      <p className="text-lg font-semibold text-gray-900">{nrc.nrcNumber}</p>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">NRC #</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm font-mono text-gray-900">{nrc.nrcNumber}</span>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Aircraft Number</label>
-                    <div className="mt-1 flex items-center">
-                      <Plane className="w-5 h-5 mr-2 text-gray-400" />
-                      <p className="text-lg font-semibold text-gray-900">{nrc.aircraftNumber}</p>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-medium text-gray-500">Priority</label>
-                    <div className="mt-1">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
                       <span
-                        className={`px-3 py-1 inline-flex items-center text-sm font-semibold rounded-full border ${getPriorityColor(
-                          nrc.priority,
-                        )}`}
+                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                          nrc.status === "pending"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : nrc.status === "accepted"
+                              ? "bg-green-100 text-green-800"
+                              : "bg-red-100 text-red-800"
+                        }`}
                       >
-                        {getPriorityIcon(nrc.priority)}
-                        {nrc.priority.toUpperCase()}
+                        {nrc.status.toUpperCase()}
                       </span>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-gray-500">Date Reported</label>
-                    <div className="mt-1 flex items-center">
-                      <Calendar className="w-5 h-5 mr-2 text-gray-400" />
-                      <p className="text-lg font-semibold text-gray-900">
-                        {new Date(nrc.date).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "long",
-                          day: "numeric",
-                        })}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-gray-500">Reported By</label>
-                    <div className="mt-1 flex items-center">
-                      <User className="w-5 h-5 mr-2 text-gray-400" />
-                      <p className="text-lg font-semibold text-gray-900">{nrc.reportedBy}</p>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Create/Edit NDT Insp</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">-</span>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
 
-            {/* Description Card */}
-            <div className="bg-white shadow rounded-lg overflow-hidden">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">Description</h3>
+            {/* Aircraft Information Section */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="px-6 py-4 bg-green-50 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <Plane className="w-5 h-5 mr-2 text-green-600" />
+                  Aircraft Information
+                </h3>
               </div>
-              <div className="px-6 py-4">
-                <p className="text-gray-900 whitespace-pre-line leading-relaxed">{nrc.description}</p>
-              </div>
-            </div>
-
-            {/* Images Card */}
-            {nrc.images && nrc.images.length > 0 && (
-              <div className="bg-white shadow rounded-lg overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200">
-                  <h3 className="text-lg leading-6 font-medium text-gray-900 flex items-center">
-                    <ImageIcon className="w-5 h-5 mr-2" />
-                    Attached Images ({nrc.images.length})
-                  </h3>
-                </div>
-                <div className="px-6 py-4">
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {nrc.images.map((image, index) => (
-                      <div
-                        key={index}
-                        className="relative group cursor-pointer"
-                        onClick={() => {
-                          // You can implement a lightbox or modal here
-                          window.open(image || "/placeholder.svg", "_blank")
-                        }}
-                      >
-                        <img
-                          src={image || "/placeholder.svg"}
-                          alt={`NRC image ${index + 1}`}
-                          className="h-48 w-full object-cover rounded-lg shadow-sm group-hover:shadow-md transition-shadow"
-                        />
-                        <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 rounded-lg transition-all"></div>
-                      </div>
-                    ))}
+              <div className="px-6 py-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Aircraft Regn</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm font-semibold text-gray-900">{nrc.aircraftNumber}</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Aircraft Model</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">A320-232</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Customer Name</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm font-semibold text-gray-900">VISTARA</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">ATA</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">25</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Sub-ATA</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">25</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Auth No</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">9173/AECAMCAH SAHOO</span>
+                    </div>
                   </div>
                 </div>
               </div>
-            )}
+            </div>
 
-            {/* Feedback Section */}
-            {nrc.feedback && (
-              <div className="bg-white shadow rounded-lg overflow-hidden">
-                <div className="px-6 py-4 border-b border-gray-200">
-                  <h3 className="text-lg leading-6 font-medium text-gray-900">Feedback & Comments</h3>
-                </div>
-                <div className="px-6 py-4">
-                  <p className="text-gray-900 whitespace-pre-line leading-relaxed">{nrc.feedback}</p>
+            {/* Work Package Information */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="px-6 py-4 bg-purple-50 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <Settings className="w-5 h-5 mr-2 text-purple-600" />
+                  Work Package Information
+                </h3>
+              </div>
+              <div className="px-6 py-6">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Trade to Action</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">B1</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Visit Package #</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">-</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Finding from Task No.</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">Additional Observation</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Duplicate Insp Req?</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">No</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Zone / Trade</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">200</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Sub Task</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">Select Sub Task</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Authority of Certification</label>
+                    <div className="p-3 bg-gray-50 rounded-md border">
+                      <span className="text-sm text-gray-900">DGCA - INDIA</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Date</label>
+                    <div className="p-3 bg-gray-50 rounded-md border flex items-center">
+                      <Calendar className="w-4 h-4 mr-2 text-gray-400" />
+                      <span className="text-sm text-gray-900">13-May-19</span>
+                    </div>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Time</label>
+                    <div className="p-3 bg-gray-50 rounded-md border flex items-center">
+                      <Clock className="w-4 h-4 mr-2 text-gray-400" />
+                      <span className="text-sm text-gray-900">16:19</span>
+                    </div>
+                  </div>
+                  <div className="md:col-span-3">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">Estimated Man Hours</label>
+                    <div className="p-3 bg-gray-50 rounded-md border flex items-center">
+                      <Timer className="w-4 h-4 mr-2 text-gray-400" />
+                      <span className="text-sm text-gray-900">00:30</span>
+                    </div>
+                  </div>
                 </div>
               </div>
-            )}
+            </div>
+
+            {/* Call Out Section */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="px-6 py-4 bg-orange-50 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <AlertTriangle className="w-5 h-5 mr-2 text-orange-600" />
+                  Call Out Details
+                </h3>
+              </div>
+              <div className="px-6 py-6">
+                <div className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Call Out: 1</label>
+                  <div className="p-4 bg-gray-50 rounded-md border">
+                    <p className="text-sm text-gray-900 leading-relaxed">
+                      VENT AVIONICS SYSTEM FAULT
+                      <br />
+                      TECH LOG NO-124128
+                      <br />
+                      SECTOR: BOM - DEL
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Taken Section */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="px-6 py-4 bg-indigo-50 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <Wrench className="w-5 h-5 mr-2 text-indigo-600" />
+                  Action Taken
+                </h3>
+              </div>
+              <div className="px-6 py-6">
+                <div className="p-4 bg-gray-50 rounded-md border min-h-[100px]">
+                  <p className="text-sm text-gray-900">
+                    SAME OPT UNDER MEL - 21-26-04-A
+                    <br />
+                    CAT C VALID TILL: 23/05/2019
+                    <br />
+                    MAINTENANCE ACTION CARRIED OUT AS PER AMM-21-26-00-040-801
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* OEM Instruction Attachments */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <FileText className="w-5 h-5 mr-2 text-gray-600" />
+                  OEM Instruction Attachments
+                </h3>
+              </div>
+              <div className="px-6 py-6">
+                <div className="p-4 bg-gray-50 rounded-md border min-h-[80px] flex items-center justify-center">
+                  <span className="text-sm text-gray-500">No attachments available</span>
+                </div>
+              </div>
+            </div>
+
+            {/* Maintenance Data */}
+            <div className="bg-white rounded-lg shadow-md overflow-hidden">
+              <div className="px-6 py-4 bg-teal-50 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
+                  <Settings className="w-5 h-5 mr-2 text-teal-600" />
+                  Maintenance Data
+                </h3>
+              </div>
+              <div className="px-6 py-6">
+                <div className="p-4 bg-gray-50 rounded-md border min-h-[100px]">
+                  <span className="text-sm text-gray-500">No maintenance data available</span>
+                </div>
+              </div>
+            </div>
           </div>
 
           {/* Sidebar */}
           <div className="lg:col-span-1">
-            <div className="bg-white shadow rounded-lg overflow-hidden sticky top-6">
-              <div className="px-6 py-4 border-b border-gray-200">
-                <h3 className="text-lg leading-6 font-medium text-gray-900">Actions</h3>
+            <div className="bg-white rounded-lg shadow-md overflow-hidden sticky top-24">
+              <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
+                <h3 className="text-lg font-semibold text-gray-900">Quick Info</h3>
               </div>
-              <div className="px-6 py-4 space-y-4">
-                {/* Action Buttons */}
-                {nrc.status === "pending" && (
-                  <div className="space-y-3">
-                    <button
-                      onClick={() => handleNrcAction("accept")}
-                      className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
-                    >
-                      <Check className="w-4 h-4 mr-2" />
-                      Accept NRC
-                    </button>
-                    <button
-                      onClick={() => handleNrcAction("reject")}
-                      className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                    >
-                      <X className="w-4 h-4 mr-2" />
-                      Reject NRC
-                    </button>
+              <div className="px-6 py-6 space-y-6">
+                {/* QR Code */}
+                <div className="text-center">
+                  <div className="inline-flex items-center justify-center w-32 h-32 bg-gray-100 rounded-lg border-2 border-dashed border-gray-300">
+                    <QrCode className="w-16 h-16 text-gray-400" />
                   </div>
-                )}
+                  <p className="mt-2 text-xs text-gray-500">QR Code</p>
+                </div>
 
-                {/* Feedback Form */}
-                {showFeedbackForm ? (
-                  <div className="space-y-3">
-                    <label htmlFor="feedback" className="block text-sm font-medium text-gray-700">
-                      Add Feedback or Query
-                    </label>
-                    <textarea
-                      id="feedback"
-                      rows={4}
-                      className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
-                      placeholder="Enter your feedback, suggestion or query..."
-                      value={feedback}
-                      onChange={(e) => setFeedback(e.target.value)}
-                    />
-                    <div className="flex space-x-2">
-                      <button
-                        onClick={() => setShowFeedbackForm(false)}
-                        className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                      >
-                        Cancel
-                      </button>
-                      <button
-                        onClick={handleSubmitFeedback}
-                        disabled={!feedback.trim()}
-                        className="flex-1 inline-flex items-center justify-center px-3 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
-                      >
-                        Submit
-                      </button>
-                    </div>
-                  </div>
-                ) : (
-                  <button
-                    onClick={() => setShowFeedbackForm(true)}
-                    className="w-full inline-flex items-center justify-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-[#2D3FA6] hover:bg-[#283780] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                {/* Status Badge */}
+                <div className="text-center">
+                  <span
+                    className={`inline-flex px-3 py-1 text-sm font-semibold rounded-full ${
+                      nrc.status === "pending"
+                        ? "bg-yellow-100 text-yellow-800"
+                        : nrc.status === "accepted"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                    }`}
                   >
-                    <MessageSquare className="w-4 h-4 mr-2" />
-                    Add Feedback/Query
-                  </button>
-                )}
+                    {nrc.status.toUpperCase()}
+                  </span>
+                </div>
+
+                {/* Priority */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
+                  <span
+                    className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
+                      nrc.priority === "critical"
+                        ? "bg-red-100 text-red-800"
+                        : nrc.priority === "high"
+                          ? "bg-orange-100 text-orange-800"
+                          : nrc.priority === "medium"
+                            ? "bg-yellow-100 text-yellow-800"
+                            : "bg-green-100 text-green-800"
+                    }`}
+                  >
+                    {nrc.priority.toUpperCase()}
+                  </span>
+                </div>
+
+                {/* Reported By */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Reported By</label>
+                  <div className="flex items-center">
+                    <User className="w-4 h-4 mr-2 text-gray-400" />
+                    <span className="text-sm text-gray-900">{nrc.reportedBy}</span>
+                  </div>
+                </div>
+
+                {/* Date */}
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Date Created</label>
+                  <div className="flex items-center">
+                    <Calendar className="w-4 h-4 mr-2 text-gray-400" />
+                    <span className="text-sm text-gray-900">{new Date(nrc.date).toLocaleDateString()}</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
