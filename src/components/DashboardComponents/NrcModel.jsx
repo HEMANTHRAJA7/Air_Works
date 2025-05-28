@@ -126,9 +126,9 @@ const NrcDetail = () => {
   return (
     <div className="min-h-screen bg-gray-100">
       {/* Sticky Header with Actions */}
-      <div className="sticky top-0 z-50 bg-white shadow-lg border-b-2 border-blue-600">
+      <div className="sticky top-[65px] z-0 bg-white shadow-lg border-b-2 border-blue-600 py-3 md:py-0 md:top-0">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between h-16">
+          <div className="flex items-center justify-between h-[30%px] flex-col md:flex-row space-y-4 md:space-y-0 md:h-16">
             <div className="flex items-center space-x-4">
               <button
                 onClick={handleGoBack}
@@ -141,7 +141,7 @@ const NrcDetail = () => {
               <h1 className="text-xl font-bold text-gray-900">UPDATE NRC</h1>
             </div>
 
-            <div className="flex items-center space-x-3">
+            <div className="flex items-center space-x-3 ">
               {nrc.status === "pending" && (
                 <>
                   <button
