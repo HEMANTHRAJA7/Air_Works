@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import {
@@ -16,7 +18,7 @@ import {
   Settings,
 } from "lucide-react"
 
-import { mockNrcData } from "./data/nrc-data"
+import { mockNrcData } from "../../pages/Dashboard/data/nrc-data"
 import ImageCarousel from "../../components/DashboardComponents/ViewingNrcPage/ImageCarousel"
 import AttachmentList from "../../components/DashboardComponents/ViewingNrcPage/AttachmentList"
 import FeedbackSection from "../../components/DashboardComponents/ViewingNrcPage/FeedbackSection"
@@ -46,7 +48,7 @@ const NrcDetail = () => {
     setNrc((prev) => ({
       ...prev,
       status: updatedStatus,
-      engineerReply: feedbackText || prev.engineerReply,
+      customerFeedback: feedbackText || prev.customerFeedback,
     }))
 
     console.log(`NRC ${nrc.id} ${action}ed`, { feedbackText })
@@ -57,6 +59,7 @@ const NrcDetail = () => {
       handleNrcAction("feedback", feedback)
       setFeedback("")
       setShowFeedbackForm(false)
+      console.log("Customer feedback submitted:", feedback)
     }
   }
 
@@ -153,7 +156,7 @@ const NrcDetail = () => {
             <div className="px-6 py-4">
               <textarea
                 rows={4}
-                className="block w-full rounded-md border-gray-500 p-3 shadow-sm sm:text-sm"
+                className="block w-full rounded-md border-gray-500 p-3 shadow-sm sm:text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                 placeholder="Enter your feedback, suggestion or query..."
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}

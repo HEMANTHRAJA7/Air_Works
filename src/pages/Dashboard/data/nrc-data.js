@@ -2,7 +2,7 @@ export const mockNrcData = [
   {
     id: "1",
     nrcNumber: "41321205-131043",
-    aircraftNumber: "VT-TTG",
+    aircraftRegn: "VT-TTG",
     aircraftModel: "A320-232",
     description: "VENT AVIONICS SYSTEM FAULT TECH LOG NO-124128 SECTOR: BOM - DEL",
     status: "pending",
@@ -84,8 +84,8 @@ export const mockNrcData = [
   {
     id: "2",
     nrcNumber: "41321205-131044",
-    aircraftNumber: "VT-ABC",
-    aircraftModel: "A320-232",
+    aircraftRegn: "VT-ABC",
+    aircraftModel: "A320-233",
     description:
       "Landing gear indicator light malfunction. Warning light remains on even when gear is properly retracted.",
     status: "accepted",
@@ -136,8 +136,8 @@ export const mockNrcData = [
   {
     id: "3",
     nrcNumber: "41321205-131045",
-    aircraftNumber: "VT-XYZ",
-    aircraftModel: "A320-232",
+    aircraftRegn: "VT-XYZ",
+    aircraftModel: "A320-234",
     description: "Minor cabin interior damage - loose seat armrest in row 12A. Passenger reported during flight.",
     status: "rejected",
     priority: "low",
@@ -179,8 +179,8 @@ export const mockNrcData = [
   {
     id: "4",
     nrcNumber: "41321205-131046",
-    aircraftNumber: "VT-DEF",
-    aircraftModel: "A320-232",
+    aircraftRegn: "VT-DEF",
+    aircraftModel: "A320-235",
     description: "Engine oil pressure warning during taxi. Crew reported abnormal readings on engine 2.",
     status: "pending",
     priority: "critical",
@@ -251,8 +251,8 @@ export const mockNrcData = [
   {
     id: "5",
     nrcNumber: "41321205-131047",
-    aircraftNumber: "VT-GHI",
-    aircraftModel: "A320-232",
+    aircraftRegn: "VT-GHI",
+    aircraftModel: "A320-236",
     description: "Cabin air conditioning system not cooling properly. Passengers complained of high temperature.",
     status: "accepted",
     priority: "medium",

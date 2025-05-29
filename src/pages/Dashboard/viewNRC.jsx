@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import {
@@ -18,7 +20,7 @@ import {
   ChevronRight,
 } from "lucide-react"
 
-import { mockNrcData } from "./data/nrc-data"
+import { mockNrcData } from "../../pages/Dashboard/data/nrc-data"
 
 const ViewNRC = () => {
   const navigate = useNavigate()
@@ -173,7 +175,7 @@ const ViewNRC = () => {
           ? {
               ...nrc,
               status: action === "accept" ? "accepted" : action === "reject" ? "rejected" : nrc.status,
-              engineerReply: feedbackText || nrc.engineerReply,
+              customerFeedback: feedbackText || nrc.customerFeedback,
             }
           : nrc,
       ),
