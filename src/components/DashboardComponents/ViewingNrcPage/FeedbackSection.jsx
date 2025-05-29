@@ -15,22 +15,22 @@ const FeedbackSection = ({ customerFeedback, engineerReply }) => {
       </div>
       <div className="px-6 py-6 space-y-4">
         {customerFeedback && (
-          <div className="bg-orange-50 border border-orange-200 rounded-lg p-4">
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
             <div className="flex items-start space-x-3">
               <div className="flex-shrink-0">
-                <div className="w-8 h-8 bg-orange-100 rounded-full flex items-center justify-center">
-                  <User className="w-4 h-4 text-orange-600" />
+                <div className="w-8 h-8 bg-blue-100 rounded-full flex items-center justify-center">
+                  <User className="w-4 h-4 text-blue-600" />
                 </div>
               </div>
               <div className="flex-1">
                 <div className="flex items-center space-x-2 mb-2">
-                  <span className="text-sm font-medium text-orange-900">Customer Feedback</span>
-                  <span className="text-xs text-orange-600 flex items-center">
+                  <span className="text-sm font-medium text-blue-900">Customer Feedback</span>
+                  <span className="text-xs text-blue-600 flex items-center">
                     <Clock className="w-3 h-3 mr-1" />
                     Received
                   </span>
                 </div>
-                <p className="text-sm text-orange-800 leading-relaxed">{customerFeedback}</p>
+                <p className="text-sm text-blue-800 leading-relaxed">{customerFeedback}</p>
               </div>
             </div>
           </div>

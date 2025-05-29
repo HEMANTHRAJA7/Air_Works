@@ -805,12 +805,12 @@ const ViewNRC = () => {
                         {(nrc.customerFeedback || nrc.engineerReply) && (
                           <div className="mt-3 space-y-2">
                             {nrc.customerFeedback && (
-                              <div className="p-3 bg-orange-50 rounded-md border border-orange-200">
+                              <div className="p-3 bg-blue-50 rounded-md border border-blue-200">
                                 <div className="flex items-start">
-                                  <MessageSquare className="w-4 h-4 mr-2 text-orange-600 mt-0.5" />
+                                  <MessageSquare className="w-4 h-4 mr-2 text-blue-600 mt-0.5" />
                                   <div>
-                                    <span className="text-sm font-medium text-orange-900">Customer Feedback:</span>
-                                    <p className="text-sm text-orange-800 mt-1">{nrc.customerFeedback}</p>
+                                    <span className="text-sm font-medium text-blue-900">Customer Feedback:</span>
+                                    <p className="text-sm text-blue-800 mt-1">{nrc.customerFeedback}</p>
                                   </div>
                                 </div>
                               </div>
