@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
+import { useParams, useNavigate } from "react-router-dom"
 import {
   ArrowLeft,
   Check,
@@ -14,79 +14,55 @@ import {
   Wrench,
   Timer,
   Settings,
-  ImageIcon,
-} from "lucide-react";
+} from "lucide-react"
 
-import { mockNrcData } from "../../pages/Dashboard/data/nrc-data";
+import { mockNrcData } from "./data/nrc-data"
+import ImageCarousel from "../../components/DashboardComponents/ViewingNrcPage/ImageCarousel"
+import AttachmentList from "../../components/DashboardComponents/ViewingNrcPage/AttachmentList"
+import FeedbackSection from "../../components/DashboardComponents/ViewingNrcPage/FeedbackSection"
 
 const NrcDetail = () => {
-  const { nrcId } = useParams();
-  const navigate = useNavigate();
-  const [nrc, setNrc] = useState(null);
-  const [feedback, setFeedback] = useState("");
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [imageLoadingStates, setImageLoadingStates] = useState({});
+  const { nrcId } = useParams()
+  const navigate = useNavigate()
+  const [nrc, setNrc] = useState(null)
+  const [feedback, setFeedback] = useState("")
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // Find the NRC by ID
-    const foundNrc = mockNrcData.find((item) => item.id === nrcId);
+    const foundNrc = mockNrcData.find((item) => item.id === nrcId)
     if (foundNrc) {
-      setNrc(foundNrc);
-      // Initialize image loading states
-      const loadingStates = {};
-      foundNrc.images.forEach((_, index) => {
-        loadingStates[index] = true;
-      });
-      setImageLoadingStates(loadingStates);
+      setNrc(foundNrc)
     }
-    setLoading(false);
-  }, [nrcId]);
-
-  const handleImageLoad = (index) => {
-    setImageLoadingStates((prev) => ({
-      ...prev,
-      [index]: false,
-    }));
-  };
-
-  const handleImageError = (index) => {
-    setImageLoadingStates((prev) => ({
-      ...prev,
-      [index]: false,
-    }));
-  };
+    setLoading(false)
+  }, [nrcId])
 
   const handleNrcAction = (action, feedbackText = "") => {
-    if (!nrc) return;
+    if (!nrc) return
 
-    const updatedStatus =
-      action === "accept"
-        ? "accepted"
-        : action === "reject"
-        ? "rejected"
-        : nrc.status;
+    const updatedStatus = action === "accept" ? "accepted" : action === "reject" ? "rejected" : nrc.status
 
     setNrc((prev) => ({
       ...prev,
       status: updatedStatus,
-      feedback: feedbackText || prev.feedback,
-    }));
+      engineerReply: feedbackText || prev.engineerReply,
+    }))
 
-    console.log(`NRC ${nrc.id} ${action}ed`, { feedbackText });
-  };
+    console.log(`NRC ${nrc.id} ${action}ed`, { feedbackText })
+  }
 
   const handleSubmitFeedback = () => {
     if (feedback.trim() && nrc) {
-      handleNrcAction("feedback", feedback);
-      setFeedback("");
-      setShowFeedbackForm(false);
+      handleNrcAction("feedback", feedback)
+      setFeedback("")
+      setShowFeedbackForm(false)
     }
-  };
+  }
 
   const handleGoBack = () => {
-    navigate("/dashboard/view-nrc");
-  };
+    navigate("/dashboard/view-nrc")
+  }
 
   if (loading) {
     return (
@@ -96,19 +72,15 @@ const NrcDetail = () => {
           <p className="mt-4 text-gray-600">Loading NRC details...</p>
         </div>
       </div>
-    );
+    )
   }
 
   if (!nrc) {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">
-            NRC Not Found
-          </h2>
-          <p className="text-gray-600 mb-6">
-            The requested NRC could not be found.
-          </p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">NRC Not Found</h2>
+          <p className="text-gray-600 mb-6">The requested NRC could not be found.</p>
           <button
             onClick={handleGoBack}
             className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
@@ -118,7 +90,7 @@ const NrcDetail = () => {
           </button>
         </div>
       </div>
-    );
+    )
   }
 
   return (
@@ -176,14 +148,12 @@ const NrcDetail = () => {
         {showFeedbackForm && (
           <div className="mb-6 bg-white rounded-lg shadow-md border border-blue-200">
             <div className="px-6 py-4 border-b border-gray-200 bg-blue-50">
-              <h3 className="text-lg font-medium text-gray-900">
-                Add Feedback
-              </h3>
+              <h3 className="text-lg font-medium text-gray-900">Add Feedback</h3>
             </div>
             <div className="px-6 py-4">
               <textarea
                 rows={4}
-                className="block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
+                className="block w-full rounded-md border-gray-500 p-3 shadow-sm sm:text-sm"
                 placeholder="Enter your feedback, suggestion or query..."
                 value={feedback}
                 onChange={(e) => setFeedback(e.target.value)}
@@ -219,27 +189,21 @@ const NrcDetail = () => {
             <div className="px-6 py-6">
               <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    NRC #
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">NRC #</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm font-mono text-gray-900">
-                      {nrc.nrcNumber}
-                    </span>
+                    <span className="text-sm font-mono text-gray-900">{nrc.nrcNumber}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Status
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
                     <span
                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                         nrc.status === "pending"
                           ? "bg-yellow-100 text-yellow-800"
                           : nrc.status === "accepted"
-                          ? "bg-green-100 text-green-800"
-                          : "bg-red-100 text-red-800"
+                            ? "bg-green-100 text-green-800"
+                            : "bg-red-100 text-red-800"
                       }`}
                     >
                       {nrc.status.toUpperCase()}
@@ -247,19 +211,17 @@ const NrcDetail = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Priority
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Priority</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
                     <span
                       className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${
                         nrc.priority === "critical"
                           ? "bg-red-100 text-red-800"
                           : nrc.priority === "high"
-                          ? "bg-orange-100 text-orange-800"
-                          : nrc.priority === "medium"
-                          ? "bg-yellow-100 text-yellow-800"
-                          : "bg-green-100 text-green-800"
+                            ? "bg-orange-100 text-orange-800"
+                            : nrc.priority === "medium"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : "bg-green-100 text-green-800"
                       }`}
                     >
                       {nrc.priority.toUpperCase()}
@@ -267,33 +229,23 @@ const NrcDetail = () => {
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Create/Edit NDT Insp
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Create/Edit NDT Insp</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
                     <span className="text-sm text-gray-900">-</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Reported By
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Reported By</label>
                   <div className="p-3 bg-gray-50 rounded-md border flex items-center">
                     <User className="w-4 h-4 mr-2 text-gray-400" />
-                    <span className="text-sm text-gray-900">
-                      {nrc.reportedBy}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.reportedBy}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Date Created
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Date Created</label>
                   <div className="p-3 bg-gray-50 rounded-md border flex items-center">
                     <Calendar className="w-4 h-4 mr-2 text-gray-400" />
-                    <span className="text-sm text-gray-900">
-                      {new Date(nrc.date).toLocaleDateString()}
-                    </span>
+                    <span className="text-sm text-gray-900">{new Date(nrc.date).toLocaleDateString()}</span>
                   </div>
                 </div>
               </div>
@@ -311,55 +263,37 @@ const NrcDetail = () => {
             <div className="px-6 py-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Aircraft Regn
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Aircraft Regn</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm font-semibold text-gray-900">
-                      {nrc.aircraftNumber}
-                    </span>
+                    <span className="text-sm font-semibold text-gray-900">{nrc.aircraftNumber}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Aircraft Model
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Aircraft Model</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm text-gray-900">
-                      {nrc.aircraftModel}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.aircraftModel}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Customer Name
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Customer Name</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm font-semibold text-gray-900">
-                      {nrc.customerName}
-                    </span>
+                    <span className="text-sm font-semibold text-gray-900">{nrc.customerName}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    ATA
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">ATA</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
                     <span className="text-sm text-gray-900">{nrc.ata}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Sub-ATA
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Sub-ATA</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
                     <span className="text-sm text-gray-900">{nrc.subAta}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Auth No
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Auth No</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
                     <span className="text-sm text-gray-900">{nrc.authNo}</span>
                   </div>
@@ -379,158 +313,119 @@ const NrcDetail = () => {
             <div className="px-6 py-6">
               <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Trade to Action
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Trade to Action</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm text-gray-900">
-                      {nrc.tradeToAction}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.tradeToAction}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Visit Package #
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Visit Package #</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm text-gray-900">
-                      {nrc.visitPackage || "-"}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.visitPackage || "-"}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Finding from Task No.
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Finding from Task No.</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm text-gray-900">
-                      {nrc.findingFromTaskNo}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.findingFromTaskNo}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Duplicate Insp Req?
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Duplicate Insp Req?</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm text-gray-900">
-                      {nrc.duplicateInspReq}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.duplicateInspReq}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Zone / Trade
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Zone / Trade</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm text-gray-900">
-                      {nrc.zoneTradeCode}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.zoneTradeCode}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Sub Task
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Sub Task</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
                     <span className="text-sm text-gray-900">{nrc.subTask}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Authority of Certification
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Authority of Certification</label>
                   <div className="p-3 bg-gray-50 rounded-md border">
-                    <span className="text-sm text-gray-900">
-                      {nrc.authorityOfCertification}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.authorityOfCertification}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Time
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Time</label>
                   <div className="p-3 bg-gray-50 rounded-md border flex items-center">
                     <Clock className="w-4 h-4 mr-2 text-gray-400" />
                     <span className="text-sm text-gray-900">{nrc.time}</span>
                   </div>
                 </div>
                 <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Estimated Man Hours
-                  </label>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Estimated Man Hours</label>
                   <div className="p-3 bg-gray-50 rounded-md border flex items-center">
                     <Timer className="w-4 h-4 mr-2 text-gray-400" />
-                    <span className="text-sm text-gray-900">
-                      {nrc.estimatedManHours}
-                    </span>
+                    <span className="text-sm text-gray-900">{nrc.estimatedManHours}</span>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Call Out Section */}
+          {/* Call Out Section - Multiple Call Outs */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="px-6 py-4 bg-orange-50 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                 <AlertTriangle className="w-5 h-5 mr-2 text-orange-600" />
-                Call Out Details
+                Call Out Details ({nrc.callOuts?.length || 0})
               </h3>
             </div>
-            <div className="px-6 py-6">
-              <div className="mb-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Call Out: 1
-                </label>
+            <div className="px-6 py-6 space-y-4">
+              {nrc.callOuts && nrc.callOuts.length > 0 ? (
+                nrc.callOuts.map((callOut) => (
+                  <div key={callOut.id} className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{callOut.title}</label>
+                    <div className="p-4 bg-gray-50 rounded-md border">
+                      <p className="text-sm text-gray-900 leading-relaxed whitespace-pre-line">{callOut.description}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
                 <div className="p-4 bg-gray-50 rounded-md border">
-                  <p className="text-sm text-gray-900 leading-relaxed whitespace-pre-line">
-                    {nrc.callOut}
-                  </p>
+                  <p className="text-sm text-gray-500">No call out details available</p>
                 </div>
-              </div>
+              )}
             </div>
           </div>
 
-          {/* Action Taken Section */}
+          {/* Action Taken Section - Multiple Actions */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
             <div className="px-6 py-4 bg-indigo-50 border-b border-gray-200">
               <h3 className="text-lg font-semibold text-gray-900 flex items-center">
                 <Wrench className="w-5 h-5 mr-2 text-indigo-600" />
-                Action Taken
+                Actions Taken ({nrc.actionsTaken?.length || 0})
               </h3>
             </div>
-            <div className="px-6 py-6">
-              <div className="p-4 bg-gray-50 rounded-md border min-h-[100px]">
-                <p className="text-sm text-gray-900 whitespace-pre-line">
-                  {nrc.actionTaken}
-                </p>
-              </div>
+            <div className="px-6 py-6 space-y-4">
+              {nrc.actionsTaken && nrc.actionsTaken.length > 0 ? (
+                nrc.actionsTaken.map((action) => (
+                  <div key={action.id} className="border-b border-gray-200 pb-4 last:border-b-0 last:pb-0">
+                    <label className="block text-sm font-medium text-gray-700 mb-2">{action.title}</label>
+                    <div className="p-4 bg-gray-50 rounded-md border">
+                      <p className="text-sm text-gray-900 whitespace-pre-line">{action.description}</p>
+                    </div>
+                  </div>
+                ))
+              ) : (
+                <div className="p-4 bg-gray-50 rounded-md border">
+                  <p className="text-sm text-gray-500">No actions taken yet</p>
+                </div>
+              )}
             </div>
           </div>
 
-          {/* OEM Instruction Attachments */}
-          <div className="bg-white rounded-lg shadow-md overflow-hidden">
-            <div className="px-6 py-4 bg-gray-50 border-b border-gray-200">
-              <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                <FileText className="w-5 h-5 mr-2 text-gray-600" />
-                OEM Instruction Attachments
-              </h3>
-            </div>
-            <div className="px-6 py-6">
-              <div className="p-4 bg-gray-50 rounded-md border min-h-[80px] flex items-center justify-center">
-                {nrc.oemInstructionAttachments ? (
-                  <span className="text-sm text-gray-900">
-                    {nrc.oemInstructionAttachments}
-                  </span>
-                ) : (
-                  <span className="text-sm text-gray-500">
-                    No attachments available
-                  </span>
-                )}
-              </div>
-            </div>
-          </div>
+          {/* OEM Instruction Attachments with Preview/Download */}
+          <AttachmentList attachments={nrc.oemInstructionAttachments} title="OEM Instruction Attachments" />
 
           {/* Maintenance Data */}
           <div className="bg-white rounded-lg shadow-md overflow-hidden">
@@ -543,76 +438,23 @@ const NrcDetail = () => {
             <div className="px-6 py-6">
               <div className="p-4 bg-gray-50 rounded-md border min-h-[100px]">
                 {nrc.maintenanceData ? (
-                  <span className="text-sm text-gray-900">
-                    {nrc.maintenanceData}
-                  </span>
+                  <span className="text-sm text-gray-900">{nrc.maintenanceData}</span>
                 ) : (
-                  <span className="text-sm text-gray-500">
-                    No maintenance data available
-                  </span>
+                  <span className="text-sm text-gray-500">No maintenance data available</span>
                 )}
               </div>
             </div>
           </div>
 
-          {/* Images Section */}
-          {nrc.images && nrc.images.length > 0 && (
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="px-6 py-4 bg-slate-50 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                  <ImageIcon className="w-5 h-5 mr-2 text-slate-600" />
-                  Images ({nrc.images.length})
-                </h3>
-              </div>
-              <div className="px-6 py-6">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {nrc.images.map((image, index) => (
-                    <div key={index} className="relative">
-                      {imageLoadingStates[index] && (
-                        <div className="animate-pulse">
-                          <div className="bg-gray-300 rounded-lg h-48 w-full flex items-center justify-center">
-                            <div className="text-gray-500 text-sm">
-                              Loading image...
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                      <img
-                        src={image || "/placeholder.svg"}
-                        alt={`NRC Image ${index + 1}`}
-                        className={`w-full h-48 object-cover rounded-lg border ${
-                          imageLoadingStates[index] ? "hidden" : "block"
-                        }`}
-                        onLoad={() => handleImageLoad(index)}
-                        onError={() => handleImageError(index)}
-                      />
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Images Section with Carousel */}
+          <ImageCarousel images={nrc.images} title="Images" />
 
-          {/* Feedback Section */}
-          {nrc.feedback && (
-            <div className="bg-white rounded-lg shadow-md overflow-hidden">
-              <div className="px-6 py-4 bg-blue-50 border-b border-gray-200">
-                <h3 className="text-lg font-semibold text-gray-900 flex items-center">
-                  <MessageSquare className="w-5 h-5 mr-2 text-blue-600" />
-                  Feedback
-                </h3>
-              </div>
-              <div className="px-6 py-6">
-                <div className="p-4 bg-gray-50 rounded-md border">
-                  <p className="text-sm text-gray-900">{nrc.feedback}</p>
-                </div>
-              </div>
-            </div>
-          )}
+          {/* Feedback Section - Customer and Engineer */}
+          <FeedbackSection customerFeedback={nrc.customerFeedback} engineerReply={nrc.engineerReply} />
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default NrcDetail;
+export default NrcDetail

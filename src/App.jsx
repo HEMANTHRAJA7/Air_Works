@@ -12,7 +12,7 @@ import Notifications from "./pages/Dashboard/notifications";
 import ActivityLog from "./pages/Dashboard/activityLog";
 import Profile from "./pages/Dashboard/profile";
 import Settings from "./pages/Dashboard/settings";
-import NrcDetail from "./components/DashboardComponents/NrcModel"
+import NrcDetail from "./pages/Dashboard/NrcDetails"
 
 
 const App = () => {

@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import {
   Search,
   Filter,
@@ -16,117 +16,113 @@ import {
   FileText,
   ChevronLeft,
   ChevronRight,
-} from "lucide-react";
+} from "lucide-react"
 
-import { mockNrcData } from "./data/nrc-data";
+import { mockNrcData } from "./data/nrc-data"
 
 const ViewNRC = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate()
 
   // State management
-  const [nrcs, setNrcs] = useState([]);
-  const [filteredNrcs, setFilteredNrcs] = useState([]);
+  const [nrcs, setNrcs] = useState([])
+  const [filteredNrcs, setFilteredNrcs] = useState([])
   const [filters, setFilters] = useState({
     status: [],
     priority: [],
     dateRange: { type: "all", startDate: null, endDate: null },
-  });
-  const [searchQuery, setSearchQuery] = useState("");
+  })
+  const [searchQuery, setSearchQuery] = useState("")
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage] = useState(10); // Increased to 10 items per page
+  const [currentPage, setCurrentPage] = useState(1)
+  const [itemsPerPage] = useState(10)
 
   // Filter panel state
-  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false);
-  const [isStatusOpen, setIsStatusOpen] = useState(true);
-  const [isPriorityOpen, setIsPriorityOpen] = useState(true);
-  const [isDateRangeOpen, setIsDateRangeOpen] = useState(true);
-  const [customStartDate, setCustomStartDate] = useState("");
-  const [customEndDate, setCustomEndDate] = useState("");
+  const [isFilterPanelOpen, setIsFilterPanelOpen] = useState(false)
+  const [isStatusOpen, setIsStatusOpen] = useState(true)
+  const [isPriorityOpen, setIsPriorityOpen] = useState(true)
+  const [isDateRangeOpen, setIsDateRangeOpen] = useState(true)
+  const [customStartDate, setCustomStartDate] = useState("")
+  const [customEndDate, setCustomEndDate] = useState("")
 
   // Load mock data on component mount
   useEffect(() => {
-    setNrcs(mockNrcData);
-    setFilteredNrcs(mockNrcData);
-  }, []);
+    setNrcs(mockNrcData)
+    setFilteredNrcs(mockNrcData)
+  }, [])
 
   // Apply filters and search
   useEffect(() => {
-    let result = [...nrcs];
+    let result = [...nrcs]
 
     // Apply status filters
     if (filters.status.length > 0) {
-      result = result.filter((nrc) => filters.status.includes(nrc.status));
+      result = result.filter((nrc) => filters.status.includes(nrc.status))
     }
 
     // Apply priority filters
     if (filters.priority.length > 0) {
-      result = result.filter((nrc) => filters.priority.includes(nrc.priority));
+      result = result.filter((nrc) => filters.priority.includes(nrc.priority))
     }
 
     // Apply date range filter
     if (filters.dateRange.type !== "all") {
-      const today = new Date();
-      let startDate, endDate;
+      const today = new Date()
+      let startDate, endDate
 
       if (filters.dateRange.type === "thisMonth") {
-        startDate = new Date(today.getFullYear(), today.getMonth(), 1);
-        endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+        startDate = new Date(today.getFullYear(), today.getMonth(), 1)
+        endDate = new Date(today.getFullYear(), today.getMonth() + 1, 0)
       } else if (filters.dateRange.type === "lastMonth") {
-        startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1);
-        endDate = new Date(today.getFullYear(), today.getMonth(), 0);
-      } else if (
-        filters.dateRange.type === "custom" &&
-        filters.dateRange.startDate &&
-        filters.dateRange.endDate
-      ) {
-        startDate = new Date(filters.dateRange.startDate);
-        endDate = new Date(filters.dateRange.endDate);
+        startDate = new Date(today.getFullYear(), today.getMonth() - 1, 1)
+        endDate = new Date(today.getFullYear(), today.getMonth(), 0)
+      } else if (filters.dateRange.type === "custom" && filters.dateRange.startDate && filters.dateRange.endDate) {
+        startDate = new Date(filters.dateRange.startDate)
+        endDate = new Date(filters.dateRange.endDate)
       }
 
       if (startDate && endDate) {
         result = result.filter((nrc) => {
-          const nrcDate = new Date(nrc.date);
-          return nrcDate >= startDate && nrcDate <= endDate;
-        });
+          const nrcDate = new Date(nrc.date)
+          return nrcDate >= startDate && nrcDate <= endDate
+        })
       }
     }
 
     // Apply search query
     if (searchQuery) {
-      const query = searchQuery.toLowerCase();
+      const query = searchQuery.toLowerCase()
       result = result.filter(
         (nrc) =>
           nrc.aircraftNumber.toLowerCase().includes(query) ||
           nrc.nrcNumber.toLowerCase().includes(query) ||
           nrc.status.toLowerCase().includes(query) ||
           nrc.priority.toLowerCase().includes(query) ||
-          nrc.description.toLowerCase().includes(query)
-      );
+          nrc.description.toLowerCase().includes(query),
+      )
     }
 
-    setFilteredNrcs(result);
-    setCurrentPage(1); // Reset to first page when filters change
-  }, [nrcs, filters, searchQuery]);
+    setFilteredNrcs(result)
+    setCurrentPage(1)
+  }, [nrcs, filters, searchQuery])
 
   // Event handlers
   const handleSearch = (e) => {
-    e.preventDefault();
-  };
+    e.preventDefault()
+  }
 
   const handleFilterChange = (filterType, value) => {
     if (filterType === "status" || filterType === "priority") {
       setFilters((prevFilters) => {
-        const currentValues = prevFilters[filterType];
+        const currentValues = prevFilters[filterType]
         const updatedValues = currentValues.includes(value)
           ? currentValues.filter((item) => item !== value)
-          : [...currentValues, value];
+          : [...currentValues, value]
 
         return {
           ...prevFilters,
           [filterType]: updatedValues,
-        };
-      });
+        }
+      })
     } else if (filterType === "dateRange") {
       setFilters((prevFilters) => ({
         ...prevFilters,
@@ -135,9 +131,9 @@ const ViewNRC = () => {
           startDate: value === "custom" ? customStartDate : null,
           endDate: value === "custom" ? customEndDate : null,
         },
-      }));
+      }))
     }
-  };
+  }
 
   const handleCustomDateChange = () => {
     if (customStartDate && customEndDate) {
@@ -148,27 +144,27 @@ const ViewNRC = () => {
           startDate: customStartDate,
           endDate: customEndDate,
         },
-      }));
+      }))
     }
-  };
+  }
 
   const handleRemoveFilter = (filterType, value) => {
     if (filterType === "status" || filterType === "priority") {
       setFilters((prevFilters) => ({
         ...prevFilters,
         [filterType]: prevFilters[filterType].filter((item) => item !== value),
-      }));
+      }))
     } else if (filterType === "dateRange") {
       setFilters((prevFilters) => ({
         ...prevFilters,
         dateRange: { type: "all", startDate: null, endDate: null },
-      }));
+      }))
     }
-  };
+  }
 
   const handleViewNrc = (nrc) => {
-    navigate(`/dashboard/view-nrc/${nrc.id}`);
-  };
+    navigate(`/dashboard/view-nrc/${nrc.id}`)
+  }
 
   const handleNrcAction = (nrcId, action, feedbackText = "") => {
     setNrcs((prevNrcs) =>
@@ -176,95 +172,87 @@ const ViewNRC = () => {
         nrc.id === nrcId
           ? {
               ...nrc,
-              status:
-                action === "accept"
-                  ? "accepted"
-                  : action === "reject"
-                  ? "rejected"
-                  : nrc.status,
-              feedback: feedbackText || nrc.feedback,
+              status: action === "accept" ? "accepted" : action === "reject" ? "rejected" : nrc.status,
+              engineerReply: feedbackText || nrc.engineerReply,
             }
-          : nrc
-      )
-    );
-  };
+          : nrc,
+      ),
+    )
+  }
 
   // Helper functions
   const getPriorityColor = (priority) => {
     switch (priority.toLowerCase()) {
       case "critical":
-        return "bg-red-100 text-red-800 border-red-200";
+        return "bg-red-100 text-red-800 border-red-200"
       case "high":
-        return "bg-orange-100 text-orange-800 border-orange-200";
+        return "bg-orange-100 text-orange-800 border-orange-200"
       case "medium":
-        return "bg-yellow-100 text-yellow-800 border-yellow-200";
+        return "bg-yellow-100 text-yellow-800 border-yellow-200"
       case "low":
-        return "bg-green-100 text-green-800 border-green-200";
+        return "bg-green-100 text-green-800 border-green-200"
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-gray-100 text-gray-800 border-gray-200"
     }
-  };
+  }
 
   const getPriorityIcon = (priority) => {
     switch (priority.toLowerCase()) {
       case "critical":
-        return <AlertTriangle className="w-4 h-4 mr-1 text-red-800" />;
+        return <AlertTriangle className="w-4 h-4 mr-1 text-red-800" />
       case "high":
-        return <AlertTriangle className="w-4 h-4 mr-1 text-orange-800" />;
+        return <AlertTriangle className="w-4 h-4 mr-1 text-orange-800" />
       case "medium":
-        return <Clock className="w-4 h-4 mr-1 text-yellow-800" />;
+        return <Clock className="w-4 h-4 mr-1 text-yellow-800" />
       case "low":
-        return <Clock className="w-4 h-4 mr-1 text-green-800" />;
+        return <Clock className="w-4 h-4 mr-1 text-green-800" />
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const getStatusColor = (status) => {
     switch (status.toLowerCase()) {
       case "accepted":
-        return "bg-green-100 text-green-800 border-green-200";
+        return "bg-green-100 text-green-800 border-green-200"
       case "rejected":
-        return "bg-red-100 text-red-800 border-red-200";
+        return "bg-red-100 text-red-800 border-red-200"
       case "pending":
-        return "bg-blue-100 text-blue-800 border-blue-200";
+        return "bg-blue-100 text-blue-800 border-blue-200"
       default:
-        return "bg-gray-100 text-gray-800 border-gray-200";
+        return "bg-gray-100 text-gray-800 border-gray-200"
     }
-  };
+  }
 
   // Check if any filters are applied
-  const hasFilters =
-    filters.status.length > 0 ||
-    filters.priority.length > 0 ||
-    filters.dateRange.type !== "all";
+  const hasFilters = filters.status.length > 0 || filters.priority.length > 0 || filters.dateRange.type !== "all"
 
   // Get date range label for display
   const getDateRangeLabel = () => {
     switch (filters.dateRange.type) {
       case "thisMonth":
-        return "This Month";
+        return "This Month"
       case "lastMonth":
-        return "Last Month";
+        return "Last Month"
       case "custom":
         if (filters.dateRange.startDate && filters.dateRange.endDate) {
-          return `${filters.dateRange.startDate} to ${filters.dateRange.endDate}`;
+          return `${filters.dateRange.startDate} to ${filters.dateRange.endDate}`
         }
-        return "Custom Date Range";
+        return "Custom Date Range"
       default:
-        return null;
+        return null
     }
-  };
+  }
 
   const paginate = (pageNumber) => {
-    setCurrentPage(pageNumber);
-  };
+    setCurrentPage(pageNumber)
+  }
 
   // Get current NRCs for pagination
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentNrcs = filteredNrcs.slice(indexOfFirstItem, indexOfLastItem);
-  const totalPages = Math.ceil(filteredNrcs.length / itemsPerPage);
+  const indexOfLastItem = currentPage * itemsPerPage
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage
+  const currentNrcs = filteredNrcs.slice(indexOfFirstItem, indexOfLastItem)
+  const totalPages = Math.ceil(filteredNrcs.length / itemsPerPage)
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14 md:pt-0">
@@ -326,10 +314,7 @@ const ViewNRC = () => {
                   <Filter className="w-5 h-5 mr-2 text-gray-500" />
                   Filters
                 </h3>
-                <button
-                  onClick={() => setIsFilterPanelOpen(false)}
-                  className="text-gray-400 hover:text-gray-600"
-                >
+                <button onClick={() => setIsFilterPanelOpen(false)} className="text-gray-400 hover:text-gray-600">
                   <X className="w-5 h-5" />
                 </button>
               </div>
@@ -344,9 +329,7 @@ const ViewNRC = () => {
                   >
                     <span>Status</span>
                     <ChevronDown
-                      className={`w-5 h-5 transition-transform ${
-                        isStatusOpen ? "transform rotate-180" : ""
-                      }`}
+                      className={`w-5 h-5 transition-transform ${isStatusOpen ? "transform rotate-180" : ""}`}
                     />
                   </button>
 
@@ -358,13 +341,9 @@ const ViewNRC = () => {
                             type="checkbox"
                             className="rounded text-blue-600 focus:ring-blue-500 h-4 w-4"
                             checked={filters.status.includes(status)}
-                            onChange={() =>
-                              handleFilterChange("status", status)
-                            }
+                            onChange={() => handleFilterChange("status", status)}
                           />
-                          <span className="ml-2 text-sm capitalize">
-                            {status}
-                          </span>
+                          <span className="ml-2 text-sm capitalize">{status}</span>
                         </label>
                       ))}
                     </div>
@@ -379,9 +358,7 @@ const ViewNRC = () => {
                   >
                     <span>Priority</span>
                     <ChevronDown
-                      className={`w-5 h-5 transition-transform ${
-                        isPriorityOpen ? "transform rotate-180" : ""
-                      }`}
+                      className={`w-5 h-5 transition-transform ${isPriorityOpen ? "transform rotate-180" : ""}`}
                     />
                   </button>
 
@@ -393,13 +370,9 @@ const ViewNRC = () => {
                             type="checkbox"
                             className="rounded text-blue-600 focus:ring-blue-500 h-4 w-4"
                             checked={filters.priority.includes(priority)}
-                            onChange={() =>
-                              handleFilterChange("priority", priority)
-                            }
+                            onChange={() => handleFilterChange("priority", priority)}
                           />
-                          <span className="ml-2 text-sm capitalize">
-                            {priority}
-                          </span>
+                          <span className="ml-2 text-sm capitalize">{priority}</span>
                         </label>
                       ))}
                     </div>
@@ -414,9 +387,7 @@ const ViewNRC = () => {
                   >
                     <span>Date Range</span>
                     <ChevronDown
-                      className={`w-5 h-5 transition-transform ${
-                        isDateRangeOpen ? "transform rotate-180" : ""
-                      }`}
+                      className={`w-5 h-5 transition-transform ${isDateRangeOpen ? "transform rotate-180" : ""}`}
                     />
                   </button>
 
@@ -427,9 +398,7 @@ const ViewNRC = () => {
                           type="radio"
                           className="text-blue-600 focus:ring-blue-500 h-4 w-4"
                           checked={filters.dateRange.type === "all"}
-                          onChange={() =>
-                            handleFilterChange("dateRange", "all")
-                          }
+                          onChange={() => handleFilterChange("dateRange", "all")}
                         />
                         <span className="ml-2 text-sm">All Time</span>
                       </label>
@@ -439,9 +408,7 @@ const ViewNRC = () => {
                           type="radio"
                           className="text-blue-600 focus:ring-blue-500 h-4 w-4"
                           checked={filters.dateRange.type === "thisMonth"}
-                          onChange={() =>
-                            handleFilterChange("dateRange", "thisMonth")
-                          }
+                          onChange={() => handleFilterChange("dateRange", "thisMonth")}
                         />
                         <span className="ml-2 text-sm">This Month</span>
                       </label>
@@ -451,9 +418,7 @@ const ViewNRC = () => {
                           type="radio"
                           className="text-blue-600 focus:ring-blue-500 h-4 w-4"
                           checked={filters.dateRange.type === "lastMonth"}
-                          onChange={() =>
-                            handleFilterChange("dateRange", "lastMonth")
-                          }
+                          onChange={() => handleFilterChange("dateRange", "lastMonth")}
                         />
                         <span className="ml-2 text-sm">Last Month</span>
                       </label>
@@ -463,9 +428,7 @@ const ViewNRC = () => {
                           type="radio"
                           className="text-blue-600 focus:ring-blue-500 h-4 w-4"
                           checked={filters.dateRange.type === "custom"}
-                          onChange={() =>
-                            handleFilterChange("dateRange", "custom")
-                          }
+                          onChange={() => handleFilterChange("dateRange", "custom")}
                         />
                         <span className="ml-2 text-sm">Custom Range</span>
                       </label>
@@ -473,22 +436,16 @@ const ViewNRC = () => {
                       {filters.dateRange.type === "custom" && (
                         <div className="mt-2 space-y-2">
                           <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                              Start Date
-                            </label>
+                            <label className="block text-sm font-medium text-gray-700">Start Date</label>
                             <input
                               type="date"
                               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
                               value={customStartDate}
-                              onChange={(e) =>
-                                setCustomStartDate(e.target.value)
-                              }
+                              onChange={(e) => setCustomStartDate(e.target.value)}
                             />
                           </div>
                           <div>
-                            <label className="block text-sm font-medium text-gray-700">
-                              End Date
-                            </label>
+                            <label className="block text-sm font-medium text-gray-700">End Date</label>
                             <input
                               type="date"
                               className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
@@ -529,9 +486,7 @@ const ViewNRC = () => {
                 >
                   <span>Status</span>
                   <ChevronDown
-                    className={`w-5 h-5 transition-transform ${
-                      isStatusOpen ? "transform rotate-180" : ""
-                    }`}
+                    className={`w-5 h-5 transition-transform ${isStatusOpen ? "transform rotate-180" : ""}`}
                   />
                 </button>
 
@@ -545,9 +500,7 @@ const ViewNRC = () => {
                           checked={filters.status.includes(status)}
                           onChange={() => handleFilterChange("status", status)}
                         />
-                        <span className="ml-3 text-sm capitalize">
-                          {status}
-                        </span>
+                        <span className="ml-3 text-sm capitalize">{status}</span>
                       </label>
                     ))}
                   </div>
@@ -562,9 +515,7 @@ const ViewNRC = () => {
                 >
                   <span>Priority</span>
                   <ChevronDown
-                    className={`w-5 h-5 transition-transform ${
-                      isPriorityOpen ? "transform rotate-180" : ""
-                    }`}
+                    className={`w-5 h-5 transition-transform ${isPriorityOpen ? "transform rotate-180" : ""}`}
                   />
                 </button>
 
@@ -576,13 +527,9 @@ const ViewNRC = () => {
                           type="checkbox"
                           className="rounded text-blue-600 focus:ring-blue-500 h-4 w-4"
                           checked={filters.priority.includes(priority)}
-                          onChange={() =>
-                            handleFilterChange("priority", priority)
-                          }
+                          onChange={() => handleFilterChange("priority", priority)}
                         />
-                        <span className="ml-3 text-sm capitalize">
-                          {priority}
-                        </span>
+                        <span className="ml-3 text-sm capitalize">{priority}</span>
                       </label>
                     ))}
                   </div>
@@ -597,9 +544,7 @@ const ViewNRC = () => {
                 >
                   <span>Date Range</span>
                   <ChevronDown
-                    className={`w-5 h-5 transition-transform ${
-                      isDateRangeOpen ? "transform rotate-180" : ""
-                    }`}
+                    className={`w-5 h-5 transition-transform ${isDateRangeOpen ? "transform rotate-180" : ""}`}
                   />
                 </button>
 
@@ -620,9 +565,7 @@ const ViewNRC = () => {
                         type="radio"
                         className="text-blue-600 focus:ring-blue-500 h-4 w-4"
                         checked={filters.dateRange.type === "thisMonth"}
-                        onChange={() =>
-                          handleFilterChange("dateRange", "thisMonth")
-                        }
+                        onChange={() => handleFilterChange("dateRange", "thisMonth")}
                       />
                       <span className="ml-3 text-sm">This Month</span>
                     </label>
@@ -632,9 +575,7 @@ const ViewNRC = () => {
                         type="radio"
                         className="text-blue-600 focus:ring-blue-500 h-4 w-4"
                         checked={filters.dateRange.type === "lastMonth"}
-                        onChange={() =>
-                          handleFilterChange("dateRange", "lastMonth")
-                        }
+                        onChange={() => handleFilterChange("dateRange", "lastMonth")}
                       />
                       <span className="ml-3 text-sm">Last Month</span>
                     </label>
@@ -644,9 +585,7 @@ const ViewNRC = () => {
                         type="radio"
                         className="text-blue-600 focus:ring-blue-500 h-4 w-4"
                         checked={filters.dateRange.type === "custom"}
-                        onChange={() =>
-                          handleFilterChange("dateRange", "custom")
-                        }
+                        onChange={() => handleFilterChange("dateRange", "custom")}
                       />
                       <span className="ml-3 text-sm">Custom Range</span>
                     </label>
@@ -654,9 +593,7 @@ const ViewNRC = () => {
                     {filters.dateRange.type === "custom" && (
                       <div className="mt-3 space-y-3">
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">
-                            Start Date
-                          </label>
+                          <label className="block text-sm font-medium text-gray-700">Start Date</label>
                           <input
                             type="date"
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
@@ -665,9 +602,7 @@ const ViewNRC = () => {
                           />
                         </div>
                         <div>
-                          <label className="block text-sm font-medium text-gray-700">
-                            End Date
-                          </label>
+                          <label className="block text-sm font-medium text-gray-700">End Date</label>
                           <input
                             type="date"
                             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
@@ -696,9 +631,7 @@ const ViewNRC = () => {
               <div className="mb-6">
                 <div className="bg-white rounded-lg shadow-md p-4">
                   <div className="flex items-center mb-3">
-                    <h3 className="text-sm font-medium text-gray-700">
-                      Applied Filters:
-                    </h3>
+                    <h3 className="text-sm font-medium text-gray-700">Applied Filters:</h3>
                   </div>
 
                   <div className="flex flex-wrap gap-2">
@@ -713,9 +646,7 @@ const ViewNRC = () => {
                           className="flex-shrink-0 ml-2 h-4 w-4 rounded-full inline-flex items-center justify-center text-blue-400 hover:bg-blue-200 hover:text-blue-500 focus:outline-none focus:bg-blue-500 focus:text-white"
                           onClick={() => handleRemoveFilter("status", status)}
                         >
-                          <span className="sr-only">
-                            Remove filter for {status}
-                          </span>
+                          <span className="sr-only">Remove filter for {status}</span>
                           <X className="h-3 w-3" />
                         </button>
                       </div>
@@ -730,33 +661,28 @@ const ViewNRC = () => {
                         <button
                           type="button"
                           className="flex-shrink-0 ml-2 h-4 w-4 rounded-full inline-flex items-center justify-center text-purple-400 hover:bg-purple-200 hover:text-purple-500 focus:outline-none focus:bg-purple-500 focus:text-white"
-                          onClick={() =>
-                            handleRemoveFilter("priority", priority)
-                          }
+                          onClick={() => handleRemoveFilter("priority", priority)}
                         >
-                          <span className="sr-only">
-                            Remove filter for {priority}
-                          </span>
+                          <span className="sr-only">Remove filter for {priority}</span>
                           <X className="h-3 w-3" />
                         </button>
                       </div>
                     ))}
 
-                    {filters.dateRange.type !== "all" &&
-                      getDateRangeLabel() && (
-                        <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
-                          <Calendar className="h-3 w-3 mr-1" />
-                          Date: {getDateRangeLabel()}
-                          <button
-                            type="button"
-                            className="flex-shrink-0 ml-2 h-4 w-4 rounded-full inline-flex items-center justify-center text-green-400 hover:bg-green-200 hover:text-green-500 focus:outline-none focus:bg-green-500 focus:text-white"
-                            onClick={() => handleRemoveFilter("dateRange")}
-                          >
-                            <span className="sr-only">Remove date filter</span>
-                            <X className="h-3 w-3" />
-                          </button>
-                        </div>
-                      )}
+                    {filters.dateRange.type !== "all" && getDateRangeLabel() && (
+                      <div className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                        <Calendar className="h-3 w-3 mr-1" />
+                        Date: {getDateRangeLabel()}
+                        <button
+                          type="button"
+                          className="flex-shrink-0 ml-2 h-4 w-4 rounded-full inline-flex items-center justify-center text-green-400 hover:bg-green-200 hover:text-green-500 focus:outline-none focus:bg-green-500 focus:text-white"
+                          onClick={() => handleRemoveFilter("dateRange")}
+                        >
+                          <span className="sr-only">Remove date filter</span>
+                          <X className="h-3 w-3" />
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               </div>
@@ -767,39 +693,30 @@ const ViewNRC = () => {
               {filteredNrcs.length === 0 ? (
                 <div className="bg-white rounded-lg shadow-md p-8 text-center">
                   <FileText className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    No NRCs found
-                  </h3>
-                  <p className="text-gray-500">
-                    No NRCs match your current search criteria.
-                  </p>
+                  <h3 className="text-lg font-medium text-gray-900 mb-2">No NRCs found</h3>
+                  <p className="text-gray-500">No NRCs match your current search criteria.</p>
                 </div>
               ) : (
                 <>
                   {currentNrcs.map((nrc) => (
-                    <div
-                      key={nrc.id}
-                      className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow"
-                    >
+                    <div key={nrc.id} className="bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow">
                       <div className="p-4">
                         {/* Header Row */}
                         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between mb-3">
                           <div className="flex-1 min-w-0">
                             <div className="flex flex-col sm:flex-row sm:items-center gap-2 mb-2">
-                              <h3 className="text-lg font-semibold text-gray-900 truncate">
-                                NRC #{nrc.nrcNumber}
-                              </h3>
+                              <h3 className="text-lg font-semibold text-gray-900 truncate">NRC #{nrc.nrcNumber}</h3>
                               <div className="flex items-center gap-2">
                                 <span
                                   className={`px-2 py-1 text-xs font-semibold rounded-full border ${getStatusColor(
-                                    nrc.status
+                                    nrc.status,
                                   )}`}
                                 >
                                   {nrc.status.toUpperCase()}
                                 </span>
                                 <span
                                   className={`px-2 py-1 text-xs font-semibold rounded-full border flex items-center ${getPriorityColor(
-                                    nrc.priority
+                                    nrc.priority,
                                   )}`}
                                 >
                                   {getPriorityIcon(nrc.priority)}
@@ -809,9 +726,7 @@ const ViewNRC = () => {
                             </div>
                             <div className="flex items-center text-sm text-gray-600 mb-2">
                               <Plane className="w-4 h-4 mr-1" />
-                              <span className="font-medium">
-                                {nrc.aircraftNumber}
-                              </span>
+                              <span className="font-medium">{nrc.aircraftNumber}</span>
                               <span className="mx-2">•</span>
                               <span>{nrc.aircraftModel}</span>
                             </div>
@@ -827,18 +742,14 @@ const ViewNRC = () => {
                             {nrc.status === "pending" && (
                               <>
                                 <button
-                                  onClick={() =>
-                                    handleNrcAction(nrc.id, "accept")
-                                  }
+                                  onClick={() => handleNrcAction(nrc.id, "accept")}
                                   className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                 >
                                   <Check className="w-4 h-4 mr-1" />
                                   Accept
                                 </button>
                                 <button
-                                  onClick={() =>
-                                    handleNrcAction(nrc.id, "reject")
-                                  }
+                                  onClick={() => handleNrcAction(nrc.id, "reject")}
                                   className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                 >
                                   <X className="w-4 h-4 mr-1" />
@@ -855,9 +766,7 @@ const ViewNRC = () => {
 
                         {/* Description */}
                         <div className="mb-3">
-                          <p className="text-sm text-gray-700 leading-relaxed line-clamp-2">
-                            {nrc.description}
-                          </p>
+                          <p className="text-sm text-gray-700 leading-relaxed line-clamp-2">{nrc.description}</p>
                         </div>
 
                         {/* Details Grid */}
@@ -865,57 +774,58 @@ const ViewNRC = () => {
                           <div className="flex items-center">
                             <User className="w-4 h-4 mr-2 text-gray-400" />
                             <div>
-                              <span className="text-gray-500">
-                                Reported by:
-                              </span>
-                              <div className="font-medium text-gray-900 truncate">
-                                {nrc.reportedBy}
-                              </div>
+                              <span className="text-gray-500">Reported by:</span>
+                              <div className="font-medium text-gray-900 truncate">{nrc.reportedBy}</div>
                             </div>
                           </div>
                           <div className="flex items-center">
                             <Calendar className="w-4 h-4 mr-2 text-gray-400" />
                             <div>
                               <span className="text-gray-500">Date:</span>
-                              <div className="font-medium text-gray-900">
-                                {new Date(nrc.date).toLocaleDateString()}
-                              </div>
+                              <div className="font-medium text-gray-900">{new Date(nrc.date).toLocaleDateString()}</div>
                             </div>
                           </div>
                           <div className="flex items-center">
                             <Clock className="w-4 h-4 mr-2 text-gray-400" />
                             <div>
                               <span className="text-gray-500">Est. Hours:</span>
-                              <div className="font-medium text-gray-900">
-                                {nrc.estimatedManHours}
-                              </div>
+                              <div className="font-medium text-gray-900">{nrc.estimatedManHours}</div>
                             </div>
                           </div>
                           <div className="flex items-center">
                             <FileText className="w-4 h-4 mr-2 text-gray-400" />
                             <div>
                               <span className="text-gray-500">ATA:</span>
-                              <div className="font-medium text-gray-900">
-                                {nrc.ata}
-                              </div>
+                              <div className="font-medium text-gray-900">{nrc.ata}</div>
                             </div>
                           </div>
                         </div>
 
                         {/* Feedback */}
-                        {nrc.feedback && (
-                          <div className="mt-3 p-3 bg-blue-50 rounded-md border border-blue-200">
-                            <div className="flex items-start">
-                              <MessageSquare className="w-4 h-4 mr-2 text-blue-600 mt-0.5" />
-                              <div>
-                                <span className="text-sm font-medium text-blue-900">
-                                  Feedback:
-                                </span>
-                                <p className="text-sm text-blue-800 mt-1">
-                                  {nrc.feedback}
-                                </p>
+                        {(nrc.customerFeedback || nrc.engineerReply) && (
+                          <div className="mt-3 space-y-2">
+                            {nrc.customerFeedback && (
+                              <div className="p-3 bg-orange-50 rounded-md border border-orange-200">
+                                <div className="flex items-start">
+                                  <MessageSquare className="w-4 h-4 mr-2 text-orange-600 mt-0.5" />
+                                  <div>
+                                    <span className="text-sm font-medium text-orange-900">Customer Feedback:</span>
+                                    <p className="text-sm text-orange-800 mt-1">{nrc.customerFeedback}</p>
+                                  </div>
+                                </div>
                               </div>
-                            </div>
+                            )}
+                            {nrc.engineerReply && (
+                              <div className="p-3 bg-green-50 rounded-md border border-green-200">
+                                <div className="flex items-start">
+                                  <MessageSquare className="w-4 h-4 mr-2 text-green-600 mt-0.5" />
+                                  <div>
+                                    <span className="text-sm font-medium text-green-900">Engineer Reply:</span>
+                                    <p className="text-sm text-green-800 mt-1">{nrc.engineerReply}</p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         )}
                       </div>
@@ -927,8 +837,7 @@ const ViewNRC = () => {
                     <div className="bg-white rounded-lg shadow-md p-4">
                       <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                         <div className="text-sm text-gray-700">
-                          Showing {indexOfFirstItem + 1} to{" "}
-                          {Math.min(indexOfLastItem, filteredNrcs.length)} of{" "}
+                          Showing {indexOfFirstItem + 1} to {Math.min(indexOfLastItem, filteredNrcs.length)} of{" "}
                           {filteredNrcs.length} results
                         </div>
                         <div className="flex items-center gap-2">
@@ -970,8 +879,7 @@ const ViewNRC = () => {
         </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default ViewNRC;
-
+export default ViewNRC
