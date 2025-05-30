@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import {
@@ -45,6 +43,15 @@ const ViewNRC = () => {
   const [isDateRangeOpen, setIsDateRangeOpen] = useState(true)
   const [customStartDate, setCustomStartDate] = useState("")
   const [customEndDate, setCustomEndDate] = useState("")
+
+  // Modal states
+  const [showAcceptModal, setShowAcceptModal] = useState(false)
+  const [showRejectModal, setShowRejectModal] = useState(false)
+  const [showFeedbackModal, setShowFeedbackModal] = useState(false)
+  const [selectedNrcId, setSelectedNrcId] = useState(null)
+  const [rejectReason, setRejectReason] = useState("")
+  const [feedbackType, setFeedbackType] = useState("data-insufficient")
+  const [feedbackDetails, setFeedbackDetails] = useState("")
 
   // Load mock data on component mount
   useEffect(() => {
@@ -182,6 +189,50 @@ const ViewNRC = () => {
     )
   }
 
+  // Modal handlers
+  const handleAcceptClick = (nrcId) => {
+    setSelectedNrcId(nrcId)
+    setShowAcceptModal(true)
+  }
+
+  const handleRejectClick = (nrcId) => {
+    setSelectedNrcId(nrcId)
+    setShowRejectModal(true)
+  }
+
+  const handleFeedbackClick = (nrcId) => {
+    setSelectedNrcId(nrcId)
+    setShowFeedbackModal(true)
+  }
+
+  const handleAcceptConfirm = () => {
+    if (selectedNrcId) {
+      handleNrcAction(selectedNrcId, "accept")
+      setShowAcceptModal(false)
+      setSelectedNrcId(null)
+    }
+  }
+
+  const handleRejectConfirm = () => {
+    if (selectedNrcId && rejectReason.trim()) {
+      handleNrcAction(selectedNrcId, "reject", rejectReason)
+      setShowRejectModal(false)
+      setSelectedNrcId(null)
+      setRejectReason("")
+    }
+  }
+
+  const handleFeedbackSubmit = () => {
+    if (selectedNrcId && feedbackDetails.trim()) {
+      const feedbackMessage = `${feedbackType}: ${feedbackDetails}`
+      handleNrcAction(selectedNrcId, "feedback", feedbackMessage)
+      setShowFeedbackModal(false)
+      setSelectedNrcId(null)
+      setFeedbackDetails("")
+      setFeedbackType("data-insufficient")
+    }
+  }
+
   // Helper functions
   const getPriorityColor = (priority) => {
     switch (priority.toLowerCase()) {
@@ -258,6 +309,127 @@ const ViewNRC = () => {
 
   return (
     <div className="min-h-screen bg-gray-50 pt-14 md:pt-0">
+      {/* Accept Confirmation Modal */}
+      {showAcceptModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Are you sure you want to accept?</h3>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => {
+                    setShowAcceptModal(false)
+                    setSelectedNrcId(null)
+                  }}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleAcceptConfirm}
+                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Reject Confirmation Modal */}
+      {showRejectModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Are you sure you want to reject?</h3>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Reason for rejection:</label>
+                <textarea
+                  rows={3}
+                  className="w-full border border-gray-300 rounded-md p-3 text-sm"
+                  placeholder="Enter reason for rejection..."
+                  value={rejectReason}
+                  onChange={(e) => setRejectReason(e.target.value)}
+                />
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => {
+                    setShowRejectModal(false)
+                    setSelectedNrcId(null)
+                    setRejectReason("")
+                  }}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleRejectConfirm}
+                  disabled={!rejectReason.trim()}
+                  className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Confirm
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Feedback Modal */}
+      {showFeedbackModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
+            <div className="p-6">
+              <h3 className="text-lg font-medium text-gray-900 mb-4">Submit Feedback</h3>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Feedback Type:</label>
+                <select
+                  className="w-full border border-gray-300 rounded-md p-2 text-sm"
+                  value={feedbackType}
+                  onChange={(e) => setFeedbackType(e.target.value)}
+                >
+                  <option value="data-insufficient">Data insufficient</option>
+                  <option value="need-review">Need review</option>
+                  <option value="other">Other</option>
+                </select>
+              </div>
+              <div className="mb-4">
+                <label className="block text-sm font-medium text-gray-700 mb-2">Detailed feedback:</label>
+                <textarea
+                  rows={3}
+                  className="w-full border border-gray-300 rounded-md p-3 text-sm"
+                  placeholder="Enter detailed feedback..."
+                  value={feedbackDetails}
+                  onChange={(e) => setFeedbackDetails(e.target.value)}
+                />
+              </div>
+              <div className="flex justify-end space-x-3">
+                <button
+                  onClick={() => {
+                    setShowFeedbackModal(false)
+                    setSelectedNrcId(null)
+                    setFeedbackDetails("")
+                    setFeedbackType("data-insufficient")
+                  }}
+                  className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-50"
+                >
+                  Cancel
+                </button>
+                <button
+                  onClick={handleFeedbackSubmit}
+                  disabled={!feedbackDetails.trim()}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  Submit
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="bg-white shadow mb-6">
@@ -744,14 +916,14 @@ const ViewNRC = () => {
                             {nrc.status === "pending" && (
                               <>
                                 <button
-                                  onClick={() => handleNrcAction(nrc.id, "accept")}
+                                  onClick={() => handleAcceptClick(nrc.id)}
                                   className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-green-600 hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-green-500"
                                 >
                                   <Check className="w-4 h-4 mr-1" />
                                   Accept
                                 </button>
                                 <button
-                                  onClick={() => handleNrcAction(nrc.id, "reject")}
+                                  onClick={() => handleRejectClick(nrc.id)}
                                   className="inline-flex items-center px-3 py-1.5 border border-transparent text-xs font-medium rounded-md text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
                                 >
                                   <X className="w-4 h-4 mr-1" />
@@ -759,7 +931,10 @@ const ViewNRC = () => {
                                 </button>
                               </>
                             )}
-                            <button className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500">
+                            <button
+                              onClick={() => handleFeedbackClick(nrc.id)}
+                              className="inline-flex items-center px-3 py-1.5 border border-gray-300 shadow-sm text-xs font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500"
+                            >
                               <MessageSquare className="w-4 h-4 mr-1" />
                               Feedback
                             </button>

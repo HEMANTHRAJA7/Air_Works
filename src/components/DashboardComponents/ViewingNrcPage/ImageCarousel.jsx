@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { ChevronLeft, ChevronRight, X, ZoomIn } from "lucide-react"
 
@@ -54,7 +52,7 @@ const ImageCarousel = ({ images, title = "Images" }) => {
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow-md overflow-hidden">
+      <div className="bg-white rounded-lg shadow-md overflow-hidden relative z-10">
         <div className="px-6 py-4 bg-slate-50 border-b border-gray-200">
           <h3 className="text-lg font-semibold text-gray-900 flex items-center justify-between">
             <span>
