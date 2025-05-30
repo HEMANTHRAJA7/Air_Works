@@ -77,7 +77,7 @@ const DashboardSidebar = () => {
 
       {/* Sidebar with fixed positioning */}
       <aside
-        className={`fixed top-0 left-0 h-screen bg-white border-r border-gray-300 
+        className={`fixed top-0 left-0 h-[100%] bg-white border-r border-gray-300 
           transform transition-all duration-300 ease-in-out z-40
           md:translate-x-0 flex flex-col
           ${sidebarOpen ? "translate-x-0 pt-[56px]" : "-translate-x-full"}
