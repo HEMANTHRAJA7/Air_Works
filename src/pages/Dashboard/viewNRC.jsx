@@ -958,7 +958,7 @@ const ViewNRC = () => {
                           <div className="flex items-center">
                             <Calendar className="w-4 h-4 mr-2 text-gray-400" />
                             <div>
-                              <span className="text-gray-500">Date:</span>
+                              <span className="text-gray-500">Issued Date:</span>
                               <div className="font-medium text-gray-900">{new Date(nrc.date).toLocaleDateString()}</div>
                             </div>
                           </div>

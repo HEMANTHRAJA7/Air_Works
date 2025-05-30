@@ -1,3 +1,7 @@
+import Image from "../../../assets/logo.jpg"
+import Image2 from "../../../assets/image.png"
+
+
 export const mockNrcData = [
   {
     id: "1",
@@ -74,8 +78,8 @@ export const mockNrcData = [
     ],
     maintenanceData: "",
     images: [
-      "/placeholder.svg?height=400&width=600",
-      "/placeholder.svg?height=400&width=600",
+      Image,
+      Image2,
       "/placeholder.svg?height=400&width=600",
       "/placeholder.svg?height=400&width=600",
       "/placeholder.svg?height=400&width=600",
