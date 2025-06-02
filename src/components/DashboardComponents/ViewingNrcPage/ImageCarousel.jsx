@@ -114,11 +114,17 @@ const ImageCarousel = ({ images, title = "Images" }) => {
 
       {/* Modal for enlarged image view - Fixed z-index and positioning */}
       {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-95 z-[9999] flex items-center justify-center p-4">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-95 z-[9999] flex items-center justify-center p-4"
+          onClick={closeModal}
+        >
           <div className="relative max-w-[95vw] max-h-[95vh] flex items-center justify-center">
             {/* Close button */}
             <button
-              onClick={closeModal}
+              onClick={(e) => {
+                e.stopPropagation()
+                closeModal()
+              }}
               className="absolute top-4 right-4 text-white hover:text-gray-300 z-[10000] bg-black bg-opacity-50 rounded-full p-2 transition-colors"
             >
               <X className="w-6 h-6" />
@@ -128,13 +134,19 @@ const ImageCarousel = ({ images, title = "Images" }) => {
             {images.length > 1 && (
               <>
                 <button
-                  onClick={prevModalImage}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    prevModalImage()
+                  }}
                   className="absolute left-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 z-[10000] bg-black bg-opacity-50 rounded-full p-2 transition-colors"
                 >
                   <ChevronLeft className="w-6 h-6" />
                 </button>
                 <button
-                  onClick={nextModalImage}
+                  onClick={(e) => {
+                    e.stopPropagation()
+                    nextModalImage()
+                  }}
                   className="absolute right-4 top-1/2 transform -translate-y-1/2 text-white hover:text-gray-300 z-[10000] bg-black bg-opacity-50 rounded-full p-2 transition-colors"
                 >
                   <ChevronRight className="w-6 h-6" />
@@ -148,6 +160,7 @@ const ImageCarousel = ({ images, title = "Images" }) => {
               alt={`Enlarged view ${modalImageIndex + 1}`}
               className="max-w-full max-h-full object-contain rounded-lg"
               style={{ maxWidth: "90vw", maxHeight: "90vh" }}
+              onClick={(e) => e.stopPropagation()}
             />
 
             {/* Image counter */}
@@ -155,9 +168,6 @@ const ImageCarousel = ({ images, title = "Images" }) => {
               {modalImageIndex + 1} / {images.length}
             </div>
           </div>
-
-          {/* Click outside to close */}
-          <div className="absolute inset-0 -z-10" onClick={closeModal} />
         </div>
       )}
     </>

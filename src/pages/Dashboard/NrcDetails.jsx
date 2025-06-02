@@ -29,8 +29,6 @@ const NrcDetail = () => {
   const { nrcId } = useParams()
   const navigate = useNavigate()
   const [nrc, setNrc] = useState(null)
-  const [feedback, setFeedback] = useState("")
-  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Modal states
@@ -71,15 +69,6 @@ const NrcDetail = () => {
 
     updateMockData(nrc.id, updates)
     console.log(`NRC ${nrc.id} ${action}ed`, { feedbackText })
-  }
-
-  const handleSubmitFeedback = () => {
-    if (feedback.trim() && nrc) {
-      handleNrcAction("feedback", feedback)
-      setFeedback("")
-      setShowFeedbackForm(false)
-      console.log("Customer feedback submitted:", feedback)
-    }
   }
 
   const handleGoBack = () => {

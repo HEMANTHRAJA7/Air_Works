@@ -194,6 +194,10 @@ const ViewNRC = () => {
       updates.status = "accepted"
     } else if (action === "reject") {
       updates.status = "rejected"
+    } else if (action === "feedback") {
+      // Feedback is handled separately in handleFeedbackSubmit
+      // This is just for consistency
+      console.log("Feedback action processed:", feedbackText)
     }
 
     updateMockData(nrcId, updates)

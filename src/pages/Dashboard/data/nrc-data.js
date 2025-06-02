@@ -48,8 +48,9 @@ export const mockNrcData = [
     images: [
       Image,
       Image2,
-      "/placeholder.svg?height=300&width=400",
-      "/placeholder.svg?height=300&width=400",
+      "/placeholder.svg?height=350&width=500",
+      "/placeholder.svg?height=300&width=450",
+      "/placeholder.svg?height=400&width=550",
     ],
     materials: [
       {
