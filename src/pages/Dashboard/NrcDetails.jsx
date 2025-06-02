@@ -142,7 +142,7 @@ const NrcDetail = () => {
     <div className="min-h-screen bg-gray-50">
       {/* Accept Confirmation Modal */}
       {showAcceptModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9980] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Are you sure you want to accept?</h3>
@@ -259,7 +259,7 @@ const NrcDetail = () => {
       {/* Main Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Sticky Header with Actions */}
-        <div className="sticky top-[65px] z-30 bg-white shadow-lg border-b-2 border-blue-600 py-3 mb-5 md:py-0 md:top-0">
+        <div className="sticky top-[65px] z-[9980] bg-white shadow-lg border-b-2 border-blue-600 py-3 mb-5 md:py-0 md:top-0">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex items-center justify-between h-[30%px] flex-col md:flex-row space-y-4 md:space-y-0 md:h-16">
               <div className="flex items-center space-x-4">
