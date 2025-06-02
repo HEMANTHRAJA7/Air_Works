@@ -29,8 +29,8 @@ const NrcDetail = () => {
   const { nrcId } = useParams()
   const navigate = useNavigate()
   const [nrc, setNrc] = useState(null)
-  // const [feedback, setFeedback] = useState("")
-  // const [showFeedbackForm, setShowFeedbackForm] = useState(false)
+  const [feedback, setFeedback] = useState("")
+  const [showFeedbackForm, setShowFeedbackForm] = useState(false)
   const [loading, setLoading] = useState(true)
 
   // Modal states
@@ -50,28 +50,37 @@ const NrcDetail = () => {
     setLoading(false)
   }, [nrcId])
 
+  const updateMockData = (nrcId, updates) => {
+    const nrcIndex = mockNrcData.findIndex((item) => item.id === nrcId)
+    if (nrcIndex !== -1) {
+      Object.assign(mockNrcData[nrcIndex], updates)
+      setNrc(mockNrcData[nrcIndex])
+    }
+  }
+
   const handleNrcAction = (action, feedbackText = "") => {
     if (!nrc) return
 
-    const updatedStatus = action === "accept" ? "accepted" : action === "reject" ? "rejected" : nrc.status
+    const updates = {}
 
-    setNrc((prev) => ({
-      ...prev,
-      status: updatedStatus,
-      customerFeedback: feedbackText || prev.customerFeedback,
-    }))
+    if (action === "accept") {
+      updates.status = "accepted"
+    } else if (action === "reject") {
+      updates.status = "rejected"
+    }
 
+    updateMockData(nrc.id, updates)
     console.log(`NRC ${nrc.id} ${action}ed`, { feedbackText })
   }
 
-  // const handleSubmitFeedback = () => {
-  //   if (feedback.trim() && nrc) {
-  //     handleNrcAction("feedback", feedback)
-  //     setFeedback("")
-  //     setShowFeedbackForm(false)
-  //     console.log("Customer feedback submitted:", feedback)
-  //   }
-  // }
+  const handleSubmitFeedback = () => {
+    if (feedback.trim() && nrc) {
+      handleNrcAction("feedback", feedback)
+      setFeedback("")
+      setShowFeedbackForm(false)
+      console.log("Customer feedback submitted:", feedback)
+    }
+  }
 
   const handleGoBack = () => {
     navigate("/dashboard/view-nrc")
@@ -92,9 +101,19 @@ const NrcDetail = () => {
   }
 
   const handleFeedbackSubmit = () => {
-    if (feedbackDetails.trim()) {
-      const feedbackMessage = `${feedbackType}: ${feedbackDetails}`
-      handleNrcAction("feedback", feedbackMessage)
+    if (feedbackDetails.trim() && nrc) {
+      const newFeedback = {
+        id: (nrc.feedbackConversations?.length || 0) + 1,
+        customerFeedback: `${feedbackType}: ${feedbackDetails}`,
+        engineerReply: null,
+        customerTimestamp: "Just now",
+        engineerTimestamp: null,
+        createdAt: new Date().toISOString(),
+      }
+
+      const updatedConversations = [...(nrc.feedbackConversations || []), newFeedback]
+      updateMockData(nrc.id, { feedbackConversations: updatedConversations })
+
       setShowFeedbackModal(false)
       setFeedbackDetails("")
       setFeedbackType("data-insufficient")
@@ -130,45 +149,11 @@ const NrcDetail = () => {
     )
   }
 
-  // Enhanced feedback conversations for carousel demonstration
-  const feedbackConversations = [
-    {
-      customerFeedback:
-        "Initial inspection shows potential structural damage on wing panel. Need immediate review and assessment.",
-      engineerReply:
-        "Acknowledged. Structural team has been notified. Detailed inspection scheduled for tomorrow morning. Will provide update within 24 hours.",
-      customerTimestamp: "3 days ago",
-      engineerTimestamp: "3 days ago",
-    },
-    {
-      customerFeedback:
-        "Follow-up: Additional cracks found during detailed inspection. Requesting priority handling and expedited repair timeline.",
-      engineerReply:
-        "Priority status confirmed. Repair team assigned. Estimated completion time is 48 hours. Will monitor progress closely.",
-      customerTimestamp: "2 days ago",
-      engineerTimestamp: "2 days ago",
-    },
-    {
-      customerFeedback: "Customer requesting update on repair progress. Aircraft needed for scheduled flight tomorrow.",
-      engineerReply:
-        "Repair work is 80% complete. On track for completion by end of day. Aircraft will be ready for pre-flight inspection tomorrow morning.",
-      customerTimestamp: "1 day ago",
-      engineerTimestamp: "1 day ago",
-    },
-    {
-      customerFeedback: "Final inspection completed. All repairs look good. Ready for return to service documentation.",
-      engineerReply:
-        "Excellent. Documentation package being prepared. Aircraft cleared for return to service. All certifications will be ready within 2 hours.",
-      customerTimestamp: "4 hours ago",
-      engineerTimestamp: "2 hours ago",
-    },
-  ]
-
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Accept Confirmation Modal */}
       {showAcceptModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Are you sure you want to accept?</h3>
@@ -193,7 +178,7 @@ const NrcDetail = () => {
 
       {/* Reject Confirmation Modal */}
       {showRejectModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Are you sure you want to reject?</h3>
@@ -232,7 +217,7 @@ const NrcDetail = () => {
 
       {/* Feedback Modal */}
       {showFeedbackModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Submit Feedback</h3>
@@ -610,7 +595,7 @@ const NrcDetail = () => {
           <ToolsAccordion tools={nrc.tools} title="Tools" />
 
           {/* Feedback Section - Customer and Engineer */}
-          <FeedbackSection feedbackConversations={feedbackConversations} />
+          <FeedbackSection feedbackConversations={nrc.feedbackConversations || []} />
         </div>
       </div>
     </div>

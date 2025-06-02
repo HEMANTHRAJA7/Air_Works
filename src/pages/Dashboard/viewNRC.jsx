@@ -1,3 +1,5 @@
+"use client"
+
 import { useState, useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import {
@@ -55,9 +57,19 @@ const ViewNRC = () => {
 
   // Load mock data on component mount
   useEffect(() => {
-    setNrcs(mockNrcData)
-    setFilteredNrcs(mockNrcData)
+    setNrcs([...mockNrcData]) // Create a copy to trigger re-renders
+    setFilteredNrcs([...mockNrcData])
   }, [])
+
+  // Function to update mock data and refresh state
+  const updateMockData = (nrcId, updates) => {
+    const nrcIndex = mockNrcData.findIndex((item) => item.id === nrcId)
+    if (nrcIndex !== -1) {
+      Object.assign(mockNrcData[nrcIndex], updates)
+      // Update local state to trigger re-render
+      setNrcs([...mockNrcData])
+    }
+  }
 
   // Apply filters and search
   useEffect(() => {
@@ -176,17 +188,15 @@ const ViewNRC = () => {
   }
 
   const handleNrcAction = (nrcId, action, feedbackText = "") => {
-    setNrcs((prevNrcs) =>
-      prevNrcs.map((nrc) =>
-        nrc.id === nrcId
-          ? {
-              ...nrc,
-              status: action === "accept" ? "accepted" : action === "reject" ? "rejected" : nrc.status,
-              customerFeedback: feedbackText || nrc.customerFeedback,
-            }
-          : nrc,
-      ),
-    )
+    const updates = {}
+
+    if (action === "accept") {
+      updates.status = "accepted"
+    } else if (action === "reject") {
+      updates.status = "rejected"
+    }
+
+    updateMockData(nrcId, updates)
   }
 
   // Modal handlers
@@ -224,8 +234,21 @@ const ViewNRC = () => {
 
   const handleFeedbackSubmit = () => {
     if (selectedNrcId && feedbackDetails.trim()) {
-      const feedbackMessage = `${feedbackType}: ${feedbackDetails}`
-      handleNrcAction(selectedNrcId, "feedback", feedbackMessage)
+      const nrc = mockNrcData.find((item) => item.id === selectedNrcId)
+      if (nrc) {
+        const newFeedback = {
+          id: (nrc.feedbackConversations?.length || 0) + 1,
+          customerFeedback: `${feedbackType}: ${feedbackDetails}`,
+          engineerReply: null,
+          customerTimestamp: "Just now",
+          engineerTimestamp: null,
+          createdAt: new Date().toISOString(),
+        }
+
+        const updatedConversations = [...(nrc.feedbackConversations || []), newFeedback]
+        updateMockData(selectedNrcId, { feedbackConversations: updatedConversations })
+      }
+
       setShowFeedbackModal(false)
       setSelectedNrcId(null)
       setFeedbackDetails("")
@@ -311,7 +334,7 @@ const ViewNRC = () => {
     <div className="min-h-screen bg-gray-50 pt-14 md:pt-0">
       {/* Accept Confirmation Modal */}
       {showAcceptModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Are you sure you want to accept?</h3>
@@ -339,7 +362,7 @@ const ViewNRC = () => {
 
       {/* Reject Confirmation Modal */}
       {showRejectModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Are you sure you want to reject?</h3>
@@ -379,7 +402,7 @@ const ViewNRC = () => {
 
       {/* Feedback Modal */}
       {showFeedbackModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-[9998] flex items-center justify-center p-4">
           <div className="bg-white rounded-lg shadow-xl max-w-md w-full">
             <div className="p-6">
               <h3 className="text-lg font-medium text-gray-900 mb-4">Submit Feedback</h3>
@@ -958,7 +981,7 @@ const ViewNRC = () => {
                           <div className="flex items-center">
                             <Calendar className="w-4 h-4 mr-2 text-gray-400" />
                             <div>
-                              <span className="text-gray-500">Issued Date:</span>
+                              <span className="text-gray-500">Date:</span>
                               <div className="font-medium text-gray-900">{new Date(nrc.date).toLocaleDateString()}</div>
                             </div>
                           </div>
@@ -979,30 +1002,34 @@ const ViewNRC = () => {
                         </div>
 
                         {/* Feedback */}
-                        {(nrc.customerFeedback || nrc.engineerReply) && (
+                        {nrc.feedbackConversations && nrc.feedbackConversations.length > 0 && (
                           <div className="mt-3 space-y-2">
-                            {nrc.customerFeedback && (
-                              <div className="p-3 bg-blue-50 rounded-md border border-blue-200">
-                                <div className="flex items-start">
-                                  <MessageSquare className="w-4 h-4 mr-2 text-blue-600 mt-0.5" />
-                                  <div>
-                                    <span className="text-sm font-medium text-blue-900">Customer Feedback:</span>
-                                    <p className="text-sm text-blue-800 mt-1">{nrc.customerFeedback}</p>
+                            {nrc.feedbackConversations.slice(-1).map((conversation) => (
+                              <div key={conversation.id}>
+                                {conversation.customerFeedback && (
+                                  <div className="p-3 bg-blue-50 rounded-md border border-blue-200">
+                                    <div className="flex items-start">
+                                      <MessageSquare className="w-4 h-4 mr-2 text-blue-600 mt-0.5" />
+                                      <div>
+                                        <span className="text-sm font-medium text-blue-900">Latest Feedback:</span>
+                                        <p className="text-sm text-blue-800 mt-1">{conversation.customerFeedback}</p>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
-                              </div>
-                            )}
-                            {nrc.engineerReply && (
-                              <div className="p-3 bg-green-50 rounded-md border border-green-200">
-                                <div className="flex items-start">
-                                  <MessageSquare className="w-4 h-4 mr-2 text-green-600 mt-0.5" />
-                                  <div>
-                                    <span className="text-sm font-medium text-green-900">Engineer Reply:</span>
-                                    <p className="text-sm text-green-800 mt-1">{nrc.engineerReply}</p>
+                                )}
+                                {conversation.engineerReply && (
+                                  <div className="p-3 bg-green-50 rounded-md border border-green-200">
+                                    <div className="flex items-start">
+                                      <MessageSquare className="w-4 h-4 mr-2 text-green-600 mt-0.5" />
+                                      <div>
+                                        <span className="text-sm font-medium text-green-900">Engineer Reply:</span>
+                                        <p className="text-sm text-green-800 mt-1">{conversation.engineerReply}</p>
+                                      </div>
+                                    </div>
                                   </div>
-                                </div>
+                                )}
                               </div>
-                            )}
+                            ))}
                           </div>
                         )}
                       </div>
