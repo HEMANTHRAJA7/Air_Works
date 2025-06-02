@@ -121,7 +121,7 @@ const ImageCarousel = ({ images, title = "Images" }) => {
         </div>
       </main>
       {isModalOpen && (
-        <div className="fixed inset-0 z-[9999] md:top-[75px] lg:left-[275px] md:left-[75px] md:right-[15px] md:bottom-[15px]  top-[175px] m-3 bg-black bg-opacity-75 rounded-lg flex items-center justify-center p-4">
+        <div className="fixed inset-0 z-[9999] md:top-[50px] lg:left-[275px] md:left-[75px] md:right-[20px] top-[165px] bottom-[10px] m-9 bg-black bg-opacity-75 rounded-lg flex items-center justify-center p-4">
           {/* Close button positioned outside the image container */}
           <button
             onClick={closeModal}
@@ -177,4 +177,3 @@ const ImageCarousel = ({ images, title = "Images" }) => {
 
 export default ImageCarousel;
 
-// fixed inset-0 z-[9999] md:top-[75px] lg:left-[275px] md:left-[75px] md:right-[15px] md:bottom-[15px]  top-[175px] m-3 bg-black bg-opacity-75 rounded-lg flex items-center justify-center p-4

@@ -1,5 +1,8 @@
 import Image from "../../../assets/logo.jpg"
 import Image2 from "../../../assets/image.png"
+import Image3 from "../../../assets/image.webp"
+import Image4 from "../../../assets/draw2.jpg"
+
 
 export const mockNrcData = [
   {
@@ -48,9 +51,9 @@ export const mockNrcData = [
     images: [
       Image,
       Image2,
-      "/placeholder.svg?height=350&width=500",
-      "/placeholder.svg?height=300&width=450",
-      "/placeholder.svg?height=400&width=550",
+      Image3,
+      Image4,
+      
     ],
     materials: [
       {
