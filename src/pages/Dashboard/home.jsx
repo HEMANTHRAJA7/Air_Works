@@ -404,11 +404,11 @@ function Dashboard() {
                     <Calendar className="flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400" />
                     Last updated: May 19, 2025
                   </div>
-                  <div className="mt-2 flex items-center text-sm text-gray-500">
+                  {/* <div className="mt-2 flex items-center text-sm text-gray-500">
                     <TrendingUp className="flex-shrink-0 mr-1.5 h-5 w-5 text-[#0FA644]" />
                     <span className="text-[#0FA644] font-medium pr-1">{nrcData.growth}% growth</span>
                     from last period
-                  </div>
+                  </div> */}
                 </div>
 
                 {/* Active filters display */}
@@ -417,15 +417,15 @@ function Dashboard() {
                     {activeFilters.map((filter, index) => (
                       <div
                         key={index}
-                        className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-[#27418C]/10 text-[#27418C]"
+                        className="inline-flex items-center px-2 py-1 rounded-full text-sm font-medium bg-[#27418C]/10 text-[#27418C]"
                       >
                         <span className="mr-1 text-gray-500">{filter.label}:</span>
                         {filter.value}
                         <button
                           onClick={() => removeFilter(filter.key)}
-                          className="ml-1 text-gray-400 hover:text-[#27418C]"
+                          className="ml-2 text-gray-400 hover:text-[#27418C]"
                         >
-                          <X className="h-3 w-3" />
+                          <X className="h-4 w-4" />
                         </button>
                       </div>
                     ))}
@@ -433,7 +433,7 @@ function Dashboard() {
                     {activeFilters.length > 0 && (
                       <button
                         onClick={resetFilter}
-                        className="text-xs text-[#27418C] hover:text-[#27418C]/80 underline"
+                        className="text-sm text-[#27418C] hover:text-[#27418C]/80 underline"
                       >
                         Clear all
                       </button>

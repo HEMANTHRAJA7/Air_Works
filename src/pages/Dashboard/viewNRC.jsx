@@ -1020,7 +1020,7 @@ const ViewNRC = () => {
                                   </div>
                                 )}
                                 {conversation.engineerReply && (
-                                  <div className="p-3 bg-green-50 rounded-md border border-green-200">
+                                  <div className="mt-3 p-3 bg-green-50 rounded-md border border-green-200">
                                     <div className="flex items-start">
                                       <MessageSquare className="w-4 h-4 mr-2 text-green-600 mt-0.5" />
                                       <div>

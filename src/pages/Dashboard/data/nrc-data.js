@@ -170,6 +170,12 @@ export const mockNrcData = [
         description:
           "Significant oil leak observed from engine compartment during pre-flight check. Leak appears to be from oil filter housing area.",
       },
+       {
+        id: 2,
+        title: "Oil Leak Detection",
+        description:
+          "Significant oil leak observed from engine compartment during pre-flight check. Leak appears to be from oil filter housing area.",
+      },
     ],
     actionsTaken: [
       {
