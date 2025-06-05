@@ -26,7 +26,7 @@ import {
   filterActivitiesByPeriod,
   calculateNrcDataFromActivities,
   generatePieData,
-} from "./data/data"
+} from "./data"
 
 function Dashboard() {
 

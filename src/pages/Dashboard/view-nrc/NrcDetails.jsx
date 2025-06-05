@@ -16,12 +16,12 @@ import {
   Settings,
 } from "lucide-react"
 
-import { mockNrcData } from "../../pages/Dashboard/data/nrc-data"
-import ImageCarousel from "../../components/DashboardComponents/ViewingNrcPage/ImageCarousel"
-import AttachmentList from "../../components/DashboardComponents/ViewingNrcPage/AttachmentList"
-import FeedbackSection from "../../components/DashboardComponents/ViewingNrcPage/FeedbackSection"
-import MaterialsAccordion from "../../components/DashboardComponents/ViewingNrcPage/MaterialAccordian"
-import ToolsAccordion from "../../components/DashboardComponents/ViewingNrcPage/ToolAcordian"
+import { mockNrcData } from "./nrc-data"
+import ImageCarousel from "../../../components/DashboardComponents/view-nrc-components/ImageCarousel"
+import AttachmentList from "../../../components/DashboardComponents/view-nrc-components/AttachmentList"
+import FeedbackSection from "../../../components/DashboardComponents/view-nrc-components/FeedbackSection"
+import MaterialsAccordion from "../../../components/DashboardComponents/view-nrc-components/MaterialAccordian"
+import ToolsAccordion from "../../../components/DashboardComponents/view-nrc-components/ToolAcordian"
 
 const NrcDetail = () => {
   const { nrcId } = useParams()

@@ -14,7 +14,7 @@ import {
   X,
 } from "lucide-react"
 
-import { mockRcData } from "../Dashboard/data/rc-data"
+import { mockRcData } from "../routine-card/rc-data"
 
 const ViewRC = () => {
   const navigate = useNavigate()

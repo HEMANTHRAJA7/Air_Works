@@ -2,10 +2,10 @@ import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { ArrowLeft, Calendar, Plane, Clock, User, FileText, Wrench, Timer, Settings } from "lucide-react"
 
-import { mockRcData } from "../Dashboard/data/rc-data"
-import AttachmentList from "../../components/DashboardComponents/ViewingRcPage/AttachmentList"
-import MaterialsAccordion from "../../components/DashboardComponents/ViewingRcPage/MarerialAccordian"
-import ToolsAccordion from "../../components/DashboardComponents/ViewingRcPage/ToolAccordian"
+import { mockRcData } from "./rc-data"
+import AttachmentList from "../../../components/DashboardComponents/view-rc-components/AttachmentList"
+import MaterialsAccordion from "../../../components/DashboardComponents/view-rc-components/MarerialAccordian"
+import ToolsAccordion from "../../../components/DashboardComponents/view-rc-components/ToolAccordian"
 
 const RcDetail = () => {
   const { rcId } = useParams()

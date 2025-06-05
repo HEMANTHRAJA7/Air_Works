@@ -5,16 +5,16 @@ import CreateAccount from "./pages/createAccount";
 
 // dashboard
 import DashboardLayout from "./components/DashboardComponents/dashboardLayout";
-import HomeDashboard from "./pages/Dashboard/Home"; 
-import ViewNRC from "./pages/Dashboard/ViewNRC";    
+import HomeDashboard from "./pages/Dashboard/home/Home"; 
+import ViewNRC from "./pages/Dashboard/routine-card/ViewNRC";    
 import Reports from "./pages/Dashboard/Reports";
 import Notifications from "./pages/Dashboard/Notifications";
 import ActivityLog from "./pages/Dashboard/ActivityLog";
 import Profile from "./pages/Dashboard/Profile";
 import Settings from "./pages/Dashboard/Settings";
-import NrcDetail from "./pages/Dashboard/NrcDetails"
-import RoutineCard from "./pages/Dashboard/ViewRC"
-import RcDetails from "./pages/Dashboard/RcDetails"
+import NrcDetail from "./pages/Dashboard/view-nrc/NrcDetails"
+import RoutineCard from "./pages/Dashboard/view-nrc/ViewRC"
+import RcDetails from "./pages/Dashboard/routine-card/RcDetails"
 
 
 const App = () => {
