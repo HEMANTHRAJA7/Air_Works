@@ -5,14 +5,15 @@ import CreateAccount from "./pages/createAccount";
 
 // dashboard
 import DashboardLayout from "./components/DashboardComponents/dashboardLayout";
-import HomeDashboard from "./pages/Dashboard/home"; 
-import ViewNRC from "./pages/Dashboard/viewNRC";    
-import Reports from "./pages/Dashboard/reports";
-import Notifications from "./pages/Dashboard/notifications";
-import ActivityLog from "./pages/Dashboard/activityLog";
-import Profile from "./pages/Dashboard/profile";
-import Settings from "./pages/Dashboard/settings";
+import HomeDashboard from "./pages/Dashboard/Home"; 
+import ViewNRC from "./pages/Dashboard/ViewNRC";    
+import Reports from "./pages/Dashboard/Reports";
+import Notifications from "./pages/Dashboard/Notifications";
+import ActivityLog from "./pages/Dashboard/ActivityLog";
+import Profile from "./pages/Dashboard/Profile";
+import Settings from "./pages/Dashboard/Settings";
 import NrcDetail from "./pages/Dashboard/NrcDetails"
+import RoutineCard from "./pages/Dashboard/RoutineCard"
 
 
 const App = () => {
@@ -29,6 +30,7 @@ const App = () => {
           <Route index element={<Navigate to="home" />} />
           <Route path="home" element={<HomeDashboard />} />
           <Route path="view-nrc" element={<ViewNRC />} />
+          <Route path="routine-card" element={<RoutineCard />} />
           <Route path="view-nrc/:nrcId" element={<NrcDetail />} />
           <Route path="reports" element={<Reports />} />
           <Route path="notifications" element={<Notifications />} />
