@@ -1,5 +1,3 @@
-"use client"
-
 import { Download, Eye, FileText } from "lucide-react"
 
 const AttachmentList = ({ attachments, title = "Attachments" }) => {

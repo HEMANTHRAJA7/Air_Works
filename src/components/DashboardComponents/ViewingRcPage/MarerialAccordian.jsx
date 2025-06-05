@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { ChevronDown, Package, Calendar, User, FileText } from "lucide-react"
 

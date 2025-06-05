@@ -1,5 +1,3 @@
-"use client"
-
 import { useState } from "react"
 import { ChevronDown, Wrench, Calendar, User, FileText, AlertCircle } from "lucide-react"
 

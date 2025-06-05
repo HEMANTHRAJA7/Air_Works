@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useEffect } from "react"
 import { useParams, useNavigate } from "react-router-dom"
 import { ArrowLeft, Calendar, Plane, Clock, User, FileText, Wrench, Timer, Settings } from "lucide-react"
