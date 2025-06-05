@@ -13,7 +13,8 @@ import ActivityLog from "./pages/Dashboard/ActivityLog";
 import Profile from "./pages/Dashboard/Profile";
 import Settings from "./pages/Dashboard/Settings";
 import NrcDetail from "./pages/Dashboard/NrcDetails"
-import RoutineCard from "./pages/Dashboard/RoutineCard"
+import RoutineCard from "./pages/Dashboard/ViewRC"
+import RcDetails from "./pages/Dashboard/RcDetails"
 
 
 const App = () => {
@@ -30,8 +31,9 @@ const App = () => {
           <Route index element={<Navigate to="home" />} />
           <Route path="home" element={<HomeDashboard />} />
           <Route path="view-nrc" element={<ViewNRC />} />
-          <Route path="routine-card" element={<RoutineCard />} />
           <Route path="view-nrc/:nrcId" element={<NrcDetail />} />
+          <Route path="routine-card" element={<RoutineCard />} />
+          <Route path="routine-card/:rcId" element={<RcDetails />} />
           <Route path="reports" element={<Reports />} />
           <Route path="notifications" element={<Notifications />} />
           <Route path="activity-log" element={<ActivityLog />} />
