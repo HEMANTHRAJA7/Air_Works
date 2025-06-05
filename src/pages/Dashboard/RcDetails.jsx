@@ -5,10 +5,9 @@ import { useParams, useNavigate } from "react-router-dom"
 import { ArrowLeft, Calendar, Plane, Clock, User, FileText, Wrench, Timer, Settings } from "lucide-react"
 
 import { mockRcData } from "../Dashboard/data/rc-data"
-import ImageCarousel from "../../components/DashboardComponents/ViewingNrcPage/"
-import AttachmentList from "../components/AttachmentList"
-import MaterialsAccordion from "../components/MaterialAccordion"
-import ToolsAccordion from "../components/ToolAccordion"
+import AttachmentList from "../../components/DashboardComponents/ViewingRcPage/AttachmentList"
+import MaterialsAccordion from "../../components/DashboardComponents/ViewingRcPage/MarerialAccordian"
+import ToolsAccordion from "../../components/DashboardComponents/ViewingRcPage/ToolAccordian"
 
 const RcDetail = () => {
   const { rcId } = useParams()
@@ -321,9 +320,6 @@ const RcDetail = () => {
               </div>
             </div>
           </div>
-
-          {/* Images Section */}
-          <ImageCarousel images={rc.images} title="Images" />
 
           {/* Materials Section */}
           <MaterialsAccordion materials={rc.materials} title="Materials" />
