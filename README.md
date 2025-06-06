@@ -1,8 +1,8 @@
 # Internship project @ AIRWORKS INDIA PVT LTD
 
-# How to start
+## How to start
 
-1)Create an empty folder and open that folder in your code editor and open the terminal or command window and initialise git
+1) Create an empty folder and open that folder in your code editor, and open the terminal or command window and initialise git
 
 ```git init```
 
