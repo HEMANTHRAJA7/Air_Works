@@ -1,36 +1,35 @@
-# React + Vite
-
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# Internship project @ AIRWORKS INDIA PVT LTD
 
 # How to start
 
-1) Clone or download the zip file of the repository
+1)Create an empty folder and open that folder in your code editor
+
+2) Open the terminal or command window and initialise git
+
+```git init```
+
+3) Clone or download the zip file of the repository
 
 ```git clone https://github.com/HEMANTHRAJA7/Air_Works.git```
 
-2) cd into the main directory
+4) cd into the main directory
 
 ```cd air_works```
 
-3) Install all the node modules
+5) Install all the node modules
 
 ```npm install```
 
-4) Run the app
+6) Run the app
 
 ```npm run dev```
 
 ## Tech used
-React, Tailwind, recharts for graphs, and lucid react for icons 
+Vite: https://vite.dev/guide/
+React: https://react.dev/
+Tailwind: https://tailwindcss.com/
+Recharts for graphs: https://recharts.org/en-US
+Lucid React for icons: https://lucide.dev/icons/
 
 
 
