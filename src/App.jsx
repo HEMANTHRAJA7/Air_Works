@@ -4,7 +4,7 @@ import Signin from "./pages/signin";
 import CreateAccount from "./pages/createAccount";
 
 // dashboard
-import DashboardLayout from "./components/DashboardComponents/dashboardLayout";
+import DashboardLayout from "./components/DashboardComponents/layout/dashboardLayout";
 import HomeDashboard from "./pages/Dashboard/home/Home"; 
 import ViewNRC from "./pages/Dashboard/routine-card/ViewNRC";    
 import Reports from "./pages/Dashboard/Reports";

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import Logo from "../../assets/logo.jpg"
-import LogoOnly from "../../assets/logo_only.png"
+import Logo from "../../../assets/logo.jpg"
+import LogoOnly from "../../../assets/logo_only.png"
 import { Home, Eye, User, Settings, FileText, Bell, Activity, LogOut, Menu, X, ChevronLeft, ChevronRight, Calendar } from 'lucide-react';
 
 const DashboardSidebar = () => {
