@@ -18,7 +18,7 @@ import {
   ChevronRight,
 } from "lucide-react"
 
-import { mockNrcData } from "../view-nrc/nrc-data"
+import { mockNrcData } from "./nrc-data"
 
 const ViewNRC = () => {
   const navigate = useNavigate()

@@ -6,14 +6,14 @@ import CreateAccount from "./pages/createAccount";
 // dashboard
 import DashboardLayout from "./components/DashboardComponents/layout/dashboardLayout";
 import HomeDashboard from "./pages/Dashboard/home/Home"; 
-import ViewNRC from "./pages/Dashboard/routine-card/ViewNRC";    
+import RoutineCard from "./pages/Dashboard/routine-card/ViewRC";    
 import Reports from "./pages/Dashboard/Reports";
 import Notifications from "./pages/Dashboard/Notifications";
 import ActivityLog from "./pages/Dashboard/ActivityLog";
 import Profile from "./pages/Dashboard/Profile";
 import Settings from "./pages/Dashboard/Settings";
 import NrcDetail from "./pages/Dashboard/view-nrc/NrcDetails"
-import RoutineCard from "./pages/Dashboard/view-nrc/ViewRC"
+import ViewNRC from "./pages/Dashboard/view-nrc/ViewNRC"
 import RcDetails from "./pages/Dashboard/routine-card/RcDetails"
 
 
