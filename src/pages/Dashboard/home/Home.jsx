@@ -1,4 +1,7 @@
+"use client"
+
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, BarChart, Bar, XAxis, YAxis, CartesianGrid } from "recharts"
 import {
   ArrowRight,
@@ -10,7 +13,6 @@ import {
   Download,
   RefreshCw,
   Calendar,
-  TrendingUp,
   MoreHorizontal,
   ChevronRight,
   ChevronLeft,
@@ -29,6 +31,7 @@ import {
 } from "./data"
 
 function Dashboard() {
+  const navigate = useNavigate()
 
   // State for screen size
   const [isSmallScreen, setIsSmallScreen] = useState(false)
@@ -68,6 +71,23 @@ function Dashboard() {
 
   // State for active filters display
   const [activeFilters, setActiveFilters] = useState([])
+
+  // Navigation handlers for the cards
+  const handleViewAllNRC = () => {
+    navigate("/dashboard/view-nrc")
+  }
+
+  const handleViewAcceptedNRC = () => {
+    navigate("/dashboard/view-nrc?status=accepted")
+  }
+
+  const handleViewRejectedNRC = () => {
+    navigate("/dashboard/view-nrc?status=rejected")
+  }
+
+  const handleViewPendingNRC = () => {
+    navigate("/dashboard/view-nrc?status=pending")
+  }
 
   // Update active filters whenever filter options change
   useEffect(() => {
@@ -658,10 +678,13 @@ function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 mt-auto">
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-[#27418C] hover:text-[#27418C]/80 flex items-center">
+                  <button
+                    onClick={handleViewAllNRC}
+                    className="font-medium text-[#27418C] hover:text-[#27418C]/80 flex items-center cursor-pointer"
+                  >
                     View all NRC
                     <ArrowRight className="ml-1 h-4 w-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -701,10 +724,13 @@ function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 mt-auto">
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-emerald-600 hover:text-[#0FA644] flex items-center">
+                  <button
+                    onClick={handleViewAcceptedNRC}
+                    className="font-medium text-emerald-600 hover:text-[#0FA644] flex items-center cursor-pointer"
+                  >
                     View accepted NRC
                     <ArrowRight className="ml-1 h-4 w-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -744,10 +770,13 @@ function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 mt-auto">
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-red-600 hover:text-red-500 flex items-center">
+                  <button
+                    onClick={handleViewRejectedNRC}
+                    className="font-medium text-red-600 hover:text-red-500 flex items-center cursor-pointer"
+                  >
                     View rejected NRC
                     <ArrowRight className="ml-1 h-4 w-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>
@@ -787,10 +816,13 @@ function Dashboard() {
               </div>
               <div className="bg-gray-50 px-5 py-3 border-t border-gray-200 mt-auto">
                 <div className="text-sm">
-                  <a href="#" className="font-medium text-[#2D3FA6] hover:text-[#2D3FA6]/80 flex items-center">
+                  <button
+                    onClick={handleViewPendingNRC}
+                    className="font-medium text-[#2D3FA6] hover:text-[#2D3FA6]/80 flex items-center cursor-pointer"
+                  >
                     View pending NRC
                     <ArrowRight className="ml-1 h-4 w-4" />
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

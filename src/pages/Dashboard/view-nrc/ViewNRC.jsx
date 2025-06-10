@@ -1,5 +1,7 @@
+"use client"
+
 import { useState, useEffect } from "react"
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useLocation } from "react-router-dom"
 import {
   Search,
   Filter,
@@ -22,6 +24,7 @@ import { mockNrcData } from "./nrc-data"
 
 const ViewNRC = () => {
   const navigate = useNavigate()
+  const location = useLocation()
 
   // State management
   const [nrcs, setNrcs] = useState([])
@@ -58,6 +61,19 @@ const ViewNRC = () => {
     setNrcs([...mockNrcData]) // Create a copy to trigger re-renders
     setFilteredNrcs([...mockNrcData])
   }, [])
+
+  // Check for URL parameters and apply filters
+  useEffect(() => {
+    const urlParams = new URLSearchParams(location.search)
+    const statusParam = urlParams.get("status")
+
+    if (statusParam) {
+      setFilters((prevFilters) => ({
+        ...prevFilters,
+        status: [statusParam],
+      }))
+    }
+  }, [location.search])
 
   // Function to update mock data and refresh state
   const updateMockData = (nrcId, updates) => {

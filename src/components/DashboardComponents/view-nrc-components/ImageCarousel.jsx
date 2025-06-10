@@ -99,7 +99,7 @@ const ImageCarousel = ({ images, title = "Images" }) => {
           </div>
 
           <div className="px-6 py-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {visibleImages.map((img, index) => (
+            {visibleImages.map((image, index) => (
               <div
                 key={index}
                 className="relative cursor-pointer group"
@@ -108,7 +108,7 @@ const ImageCarousel = ({ images, title = "Images" }) => {
                 }
               >
                 <img
-                  src={img}
+                  src={image || "/placeholder.svg"}
                   alt={`Image ${index + 1}`}
                   className="rounded-md w-full h-48 object-cover"
                 />
@@ -176,4 +176,3 @@ const ImageCarousel = ({ images, title = "Images" }) => {
 };
 
 export default ImageCarousel;
-

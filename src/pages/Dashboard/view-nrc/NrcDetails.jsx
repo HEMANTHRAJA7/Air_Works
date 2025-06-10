@@ -21,7 +21,7 @@ import ImageCarousel from "../../../components/DashboardComponents/view-nrc-comp
 import AttachmentList from "../../../components/DashboardComponents/view-nrc-components/AttachmentList"
 import FeedbackSection from "../../../components/DashboardComponents/view-nrc-components/FeedbackSection"
 import MaterialsAccordion from "../../../components/DashboardComponents/view-nrc-components/MaterialAccordian"
-import ToolsAccordion from "../../../components/DashboardComponents/view-nrc-components/ToolAcordian"
+import ToolsAccordion from "../../../components/DashboardComponents/view-nrc-components/ToolAccordian"
 
 const NrcDetail = () => {
   const { nrcId } = useParams()
