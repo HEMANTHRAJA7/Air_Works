@@ -24,9 +24,13 @@
 
 ## Tech used
 Vite: https://vite.dev/guide/
+
 React: https://react.dev/
+
 Tailwind: https://tailwindcss.com/
+
 Recharts for graphs: https://recharts.org/en-US
+
 Lucid React for icons: https://lucide.dev/icons/
 
 
