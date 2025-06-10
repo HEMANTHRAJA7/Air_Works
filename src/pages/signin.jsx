@@ -1,123 +1,101 @@
-import Image from "../assets/draw2.jpg";
-
 const Signin = () => {
   return (
-    <div className="min-h-screen flex flex-col">
-      {/* Main content container */}
-      <div className="flex-grow w-full flex items-center justify-center lg:justify-start relative overflow-hidden">
-        {/* Background image - only visible on lg screens and above */}
-        <div className="absolute inset-0 w-full h-full bg-sky-400 hidden lg:block">
-          <div
-            className={`absolute inset-0 bg-[url(${Image})] bg-cover bg-center bg-no-repeat bg-fixed`}
-          />
-        </div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100">
+      {/* Form container */}
+      <div className="w-full max-w-md px-6 sm:px-8">
+        <form
+          className="w-full 
+              bg-white 
+              shadow-xl 
+              border 
+              border-gray-200 
+              rounded-xl 
+              p-8"
+        >
+          <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800">
+            Sign In
+          </h2>
 
-        {/* Form container */}
-        <div className="w-full max-w-md px-6 sm:px-8 lg:px-0 lg:ml-[5%] z-10">
-          <form
-            className="w-full 
-                        bg-white 
-                        shadow-md 
-                        border 
-                        border-gray-200 
-                        rounded-xl 
-                        p-8 
-                        lg:bg-white/10 
-                        lg:backdrop-blur-lg 
-                        lg:border-white/30 
-                        lg:shadow-2xl"
-          >
-            <h2 className="text-3xl font-semibold mb-8 text-center text-gray-800 lg:text-white">
-              Sign In
-            </h2>
-
-            <div className="space-y-6">
-              <div className="space-y-2">
-                <label
-                  htmlFor="email"
-                  className="block text-gray-700 lg:text-white text-lg"
-                >
-                  Email
-                </label>
-                <input
-                  type="email"
-                  id="email"
-                  name="email"
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 border border-gray-300"
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <label
-                  htmlFor="password"
-                  className="block text-gray-700 lg:text-white text-lg"
-                >
-                  Password
-                </label>
-                <input
-                  type="password"
-                  id="password"
-                  name="password"
-                  required
-                  className="w-full px-4 py-3 rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 border border-gray-300"
-                  placeholder="Enter your password"
-                />
-              </div>
-
-              <div className="text-left ">
-                <p className="text-blue-600 lg:text-white text-base">
-                  Forgot Password? &nbsp;
-                  <span>
-                    <a
-                      href="/forgot-password"
-                      className="text-blue-600 font-bold hover:underline lg:text-white lg:hover:text-blue-100 transition-colors"
-                    >
-                      Click here
-                    </a>
-                  </span>
-                </p>
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-800 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 text-lg"
+          <div className="space-y-6">
+            <div className="space-y-2">
+              <label
+                htmlFor="email"
+                className="block text-gray-700 text-lg"
               >
-                Sign In
-              </button>
-              <div className="text-center">
-                <p className="text-blue-600 lg:text-white text-base">
-                  Don't have an account? &nbsp;
-                  <span>
-                    <a
-                      href="/createAccount"
-                      className="text-blue-600 font-bold hover:underline lg:text-white lg:hover:text-blue-100 transition-colors"
-                    >
-                      Create account
-                    </a>
-                  </span>
-                </p>
-                <p className="text-blue-600 lg:text-white text-base">
-                  Employee Sign In: &nbsp;
-                  <span>
-                    <a
-                      href="#"
-                      className="text-blue-600 font-bold hover:underline lg:text-white lg:hover:text-blue-100 transition-colors"
-                    >
-                      Click here
-                    </a>
-                  </span>
-                </p>
-              </div>
+                Email
+              </label>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                required
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 border border-gray-300"
+                placeholder="Enter your email"
+              />
             </div>
-          </form>
-        </div>
+
+            <div className="space-y-2">
+              <label
+                htmlFor="password"
+                className="block text-gray-700 text-lg"
+              >
+                Password
+              </label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                required
+                className="w-full px-4 py-3 rounded-lg bg-gray-100 text-gray-800 focus:outline-none focus:ring-2 focus:ring-blue-600 border border-gray-300"
+                placeholder="Enter your password"
+              />
+            </div>
+
+            <div className="text-left">
+              <p className="text-blue-600 text-base">
+                Forgot Password? &nbsp;
+                <a
+                  href="/forgot-password"
+                  className="font-bold hover:underline transition-colors"
+                >
+                  Click here
+                </a>
+              </p>
+            </div>
+
+            <button
+              type="submit"
+              className="w-full bg-blue-800 hover:bg-blue-700 text-white font-semibold py-3 px-4 rounded-lg transition duration-300 text-lg"
+            >
+              Sign In
+            </button>
+            <div className="text-center space-y-2">
+              <p className="text-blue-600 text-base">
+                Don't have an account? &nbsp;
+                <a
+                  href="/createAccount"
+                  className="font-bold hover:underline transition-colors"
+                >
+                  Create account
+                </a>
+              </p>
+              <p className="text-blue-600 text-base">
+                Employee Sign In: &nbsp;
+                <a
+                  href="#"
+                  className="font-bold hover:underline transition-colors"
+                >
+                  Click here
+                </a>
+              </p>
+            </div>
+          </div>
+        </form>
       </div>
 
       {/* Footer */}
-      <footer className="w-full text-center bg-[#2D3FA6] border-t border-gray-200 py-4">
-        <p className="text-sm text-gray-600 text-white">
+      <footer className="absolute bottom-0 w-full text-center bg-[#2D3FA6] border-t border-gray-200 py-4">
+        <p className="text-sm text-white">
           © {new Date().getFullYear()} Air Works. All rights reserved.
         </p>
       </footer>
